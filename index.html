@@ -1,0 +1,82 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WebGL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="./src/main.js" defer></script>
+    <script  id="vertex-shader" type="notjs">
+        precision mediump float;
+
+        attribute vec3 aPosition;
+        attribute vec3 aNormal;
+
+        varying vec3 vNormal;
+        varying vec3 vSurfaceToLight;
+        varying vec3 vSurfaceToView;
+        
+        uniform mat4 uModelMatrix;
+        uniform mat4 uInverseTransposeModelMatrix;
+        uniform mat4 uViewMatrix;
+        uniform mat4 uProjectionMatrix;
+
+        uniform mat4 uModelViewingProjectionMatrix;
+        uniform vec3 uLightPosition;
+        uniform vec3 uViewPosition;
+        
+        void main() {
+            vNormal = mat3(uInverseTransposeModelMatrix) * aNormal;
+            vec3 surfacePosition = (uModelMatrix * vec4(aPosition, 1)).xyz;
+            vSurfaceToLight = uLightPosition - surfacePosition;
+            vSurfaceToView = uViewPosition - surfacePosition;
+            gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aPosition, 1);
+        }
+    </script>
+    <script  id="fragment-shader" type="notjs">
+        precision mediump float;
+
+        varying vec3 vNormal;
+        varying vec3 vSurfaceToLight;
+        varying vec3 vSurfaceToView;
+
+        uniform vec3 uAmbientReflection;
+        uniform vec3 uDiffuseReflection;
+        uniform vec3 uSpecularReflection;
+
+        uniform float uShininess;
+        
+        void main() {
+            gl_FragColor = vec4(uDiffuseReflection, 1);
+
+            vec3 normal = normalize(vNormal);
+            vec3 surfaceToLightDirection = normalize(vSurfaceToLight);
+            vec3 surfaceToViewDirection = normalize(vSurfaceToView);
+            vec3 halfVector = normalize(surfaceToLightDirection + surfaceToViewDirection);
+
+            float light = dot(surfaceToLightDirection,normal);
+            float specular = 0.0;
+            if (light > 0.0) {
+              specular = pow(dot(normal, halfVector), uShininess);
+            }
+
+            gl_FragColor.rgb = 0.4*uAmbientReflection + 0.6*light*uDiffuseReflection;
+            gl_FragColor.rgb += specular*uSpecularReflection;
+        }
+    </script>
+    
+</head>
+<body>
+  <div align="center"> 
+    
+    <p><canvas id="canvas" width="500" height="500"></canvas></p>
+    <p><input id="n_slices_stacks" type="range" min="3" max="40"/>
+    <output id="value_slices_stacks"></output></p>
+    <p><input id="n_s1" type="range" min="0.2" max="2.5" step="0.1"/>
+    <output id="value_s1"></output></p>
+    <p><input id="n_s2" type="range" min="0.2" max="2.5" step="0.1"/>
+    <output id="value_s2"></output></p>
+  </div>
+</body>
+</html>
