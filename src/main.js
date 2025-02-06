@@ -1,4 +1,6 @@
+import { Scene } from "./core/scene.js";
 import {Shader} from "./core/shaders.js"
+import { Triangulo } from "./entities/triangulo.js";
 
 async function main(){
     const canvas = document.querySelector("#canvas");
@@ -29,21 +31,17 @@ async function main(){
     }
     gl.enable(gl.DEPTH_TEST);
 
-    const vertices = new Float32Array([
-                            0.0, 0.5, 0.0,
-                            0.5, 0.0, 0.0,
-                            -0.5, 0.0, 0.0]);
-
-    const positionBuffer = gl.createBuffer();
-    const positionLocation = gl.getAttribLocation(program, `aPosition`);
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(positionLocation);
-
+    const scene = new Scene();
+    const triangulo = new Triangulo();
+    scene.addObject(triangulo, gl);
+    // gl.clearColor meio que limpa a tela com a cor que voce quer, como num quadro por exemplo
+    
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+   
+    // Falta só colocar isso num loop com a lógica/update
+    scene.draw(gl, program);
+
     /* const positionBuffer = gl.createBuffer();
     
     const positionLocation = gl.getAttribLocation(program, `aPosition`);
