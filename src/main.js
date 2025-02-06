@@ -1,21 +1,27 @@
-function main(){
+import {Shader} from "./core/shaders.js"
+
+async function main(){
     const canvas = document.querySelector("#canvas");
     const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
     
     if (!gl) {
         throw new Error('WebGL not supported');
     }
-    
-    var vertexShaderSource = document.querySelector("#vertex-shader").text;
-    var fragmentShaderSource = document.querySelector("#fragment-shader").text;
-    
-    var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-    
-    var program = createProgram(gl, vertexShader, fragmentShader);
-    
-    gl.useProgram(program);
-    
+   
+    // Compila o vertex shader e frag shader e linkamos no programa que já passa a ser usado pelo webGL
+    const shader = await Shader.createShader(gl, "src/shaders/vertex.vert", "src/shaders/fragment.frag");
+    if(!shader){
+        console.error("Erro: shader não deu certo.");
+    }
+    if(!shader.program){
+        console.error("Erro: aaaaaaaaaaaaaa.");
+
+    }
+    var program = shader.program;
+    if(!program){
+        console.error("Erro: programa não foi criado corretamente.");
+        return;
+    }
     gl.enable(gl.DEPTH_TEST);
     
     const positionBuffer = gl.createBuffer();
@@ -54,6 +60,7 @@ function main(){
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     let vertexData = [];
+    let normalData = [];
     let colorData = [];
 
     const n_slices_stacks = document.querySelector("#value_slices_stacks");
@@ -80,16 +87,16 @@ function main(){
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData), gl.STATIC_DRAW);
     
     gl.viewport(0,0,500,500);
-    P0 = [1.0,1.0,3.0];
-    P_ref = [0.0,0.0,0.0];
-    V = [0.0,1.0,0.0];
+    const P0 = [1.0,1.0,3.0];
+    const P_ref = [0.0,0.0,0.0];
+    const V = [0.0,1.0,0.0];
     let viewingMatrix = set3dViewingMatrix(P0,P_ref,V);
-    xw_min = -1.0;
-    xw_max = 1.0;
-    yw_min = -1.0;
-    yw_max = 1.0;
-    z_near = -1.0;
-    z_far = -20.0;
+    const xw_min = -1.0;
+    const xw_max = 1.0;
+    const yw_min = -1.0;
+    const yw_max = 1.0;
+    const z_near = -1.0;
+    const z_far = -20.0;
     let viewingProjectionMatrix = [];
     
     gl.uniform3fv(viewPositionLocation, new Float32Array(P0));
@@ -535,34 +542,6 @@ function unitVector(v){
     
 function vectorModulus(v){
     return Math.sqrt(Math.pow(v[0],2)+Math.pow(v[1],2)+Math.pow(v[2],2));
-}
-    
-    
-function createShader(gl, type, source) {
-    var shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-    if (success) {
-    return shader;
-    }
-    
-    console.log(gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
-}
-    
-function createProgram(gl, vertexShader, fragmentShader) {
-    var program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-    var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-    if (success) {
-    return program;
-    }
-
-    console.log(gl.getProgramInfoLog(program));
-    gl.deleteProgram(program);
 }
     
 var m4 = {
