@@ -9,22 +9,42 @@ async function main(){
     }
    
     // Compila o vertex shader e frag shader e linkamos no programa que já passa a ser usado pelo webGL
-    const shader = await Shader.createShader(gl, "src/shaders/vertex.vert", "src/shaders/fragment.frag");
-    if(!shader){
-        console.error("Erro: shader não deu certo.");
-    }
-    if(!shader.program){
-        console.error("Erro: aaaaaaaaaaaaaa.");
+    
+    // const shader = await Shader.createShader(gl, "src/shaders/vertex.vert", "src/shaders/fragment.frag");
 
-    }
+    // var program = shader.program;
+   
+    // if(!program){
+    //     console.error("Erro: programa não foi criado corretamente.");
+    //     return;
+    // }
+    
+    const shader = await Shader.createShader(gl, "src/shaders/vertex_test.vert", "src/shaders/fragment_test.frag");
+
     var program = shader.program;
+   
     if(!program){
         console.error("Erro: programa não foi criado corretamente.");
         return;
     }
     gl.enable(gl.DEPTH_TEST);
-    
+
+    const vertices = new Float32Array([
+                            0.0, 0.5, 0.0,
+                            0.5, 0.0, 0.0,
+                            -0.5, 0.0, 0.0]);
+
     const positionBuffer = gl.createBuffer();
+    const positionLocation = gl.getAttribLocation(program, `aPosition`);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(positionLocation);
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    /* const positionBuffer = gl.createBuffer();
     
     const positionLocation = gl.getAttribLocation(program, `aPosition`);
     gl.enableVertexAttribArray(positionLocation);
@@ -165,9 +185,9 @@ async function main(){
         requestAnimationFrame(drawCube);
     }
     
-    drawCube();
+    drawCube(); */
 }
-   
+/*   
 function setSphereVertices(radius,slices,stacks){
     const vertexData = [];
     let slicesStep = (2*Math.PI) / slices;
@@ -811,5 +831,6 @@ var m4 = {
    function degToRad(d) {
     return d * Math.PI / 180;
    }
-    
-   main();
+    */
+
+main();
