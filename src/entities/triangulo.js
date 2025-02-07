@@ -1,6 +1,8 @@
 import { mat4 } from 'gl-matrix';
 export class Triangulo{
     constructor(){
+        this.drawable = true;
+        this.updatable = true;
         this.vertices = new Float32Array([
                             0.0, 0.5, 0.0,
                             0.5, 0.0, 0.0,

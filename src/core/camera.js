@@ -3,8 +3,8 @@ export class Camera{
     this.P0 = P0;
     this.P_ref = P_ref;
     this.V = V;
-  } 
-  set3dViewingMatrix(P0,P_ref,V){
+  }
+  set3dViewingMatrix(){
     let matrix = [];
     let N = [
       P0[0] - P_ref[0],
