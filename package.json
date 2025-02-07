@@ -1,0 +1,25 @@
+{
+  "name": "finalproject_computergraphics",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielVilela23/FinalProject_ComputerGraphics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabrielVilela23/FinalProject_ComputerGraphics/issues"
+  },
+  "homepage": "https://github.com/GabrielVilela23/FinalProject_ComputerGraphics#readme",
+  "description": "",
+  "dependencies": {
+    "gl-matrix": "^3.4.3",
+    "vite": "^6.1.0"
+  }
+}

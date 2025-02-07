@@ -1,6 +1,9 @@
 precision mediump float;
-attribute vec3 aPosition;
+attribute vec3 aPosition; // Posição do vértice no espaço local
+
+uniform mat4 uModelMatrix; // Matriz de transformação do objeto no mundo
         
         void main() {
-            gl_Position = vec4(aPosition, 1);
+            vec4 worldPosition = uModelMatrix * vec4(aPosition, 1.0);
+            gl_Position = worldPosition;
         }

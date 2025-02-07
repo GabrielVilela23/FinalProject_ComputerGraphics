@@ -1,9 +1,18 @@
 import { Scene } from "./core/scene.js";
-import {Shader} from "./core/shaders.js"
+import { Shader } from "./core/shaders.js"
 import { Triangulo } from "./entities/triangulo.js";
+import { Keyboard } from "./core/input.js"
 
 async function main(){
     const canvas = document.querySelector("#canvas");
+    canvas.addEventListener("click", () => {
+        canvas.focus();
+    });
+    canvas.addEventListener("keydown", (event) => {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(event.key)) {
+            event.preventDefault(); // Impede o scroll da página se estiver dentro do canvas
+        }});
+    
     const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
     
     if (!gl) {
@@ -33,6 +42,7 @@ async function main(){
 
     const scene = new Scene();
     const triangulo = new Triangulo();
+    const keyboard = new Keyboard(canvas);
     scene.addObject(triangulo, gl);
     // gl.clearColor meio que limpa a tela com a cor que voce quer, como num quadro por exemplo
     
@@ -41,6 +51,15 @@ async function main(){
    
     // Falta só colocar isso num loop com a lógica/update
     scene.draw(gl, program);
+
+    function loop(){
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        scene.update(keyboard);
+        scene.draw(gl, program);
+        // console.log("Rodando um frame");
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
 
     /* const positionBuffer = gl.createBuffer();
     
