@@ -1,8 +1,9 @@
-import { Scene } from "./core/scene.js";
 import { Shader } from "./core/shaders.js"
+import { Logic } from "./core/logic.js";
+import { Camera } from "./core/camera.js"
+import { Scene } from "./core/scene.js";
 import { Triangulo } from "./entities/triangulo.js";
 import { Keyboard } from "./core/input.js"
-
 
 async function main(){
     const {canvas, gl, program} = await initWebGL();    
@@ -13,8 +14,10 @@ async function main(){
     gl.clear(gl.COLOR_BUFFER_BIT);
    
     // Criamos uma cena e definimos os objetos que queremos inserir nela e os desenhamos
-
     const scene = new Scene();
+    const camera = new Camera();
+    const logic = new Logic(camera, scene); // é tipo o loop do jogo com uma cena e uma camera inicial
+
     const triangulo = new Triangulo();
     scene.addObject(triangulo, gl);
     scene.draw(gl, program);
@@ -23,14 +26,9 @@ async function main(){
     
     const keyboard = new Keyboard(canvas);
 
-    function loop(){
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        scene.update(keyboard);
-        scene.draw(gl, program);
-        requestAnimationFrame(loop);
-            // console.log("Rodando um frame");
-    }
-    requestAnimationFrame(loop);
+    logic.loop(gl, program, keyboard);
+
+    requestAnimationFrame((timestamp) => logic.loop(gl, program, keyboard)); 
 }
 
 main();
