@@ -1,4 +1,10 @@
-function set3dViewingMatrix(P0,P_ref,V){
+export class Camera{
+  constructor(P0, P_ref, V){
+    this.P0 = P0;
+    this.P_ref = P_ref;
+    this.V = V;
+  } 
+  set3dViewingMatrix(P0,P_ref,V){
     let matrix = [];
     let N = [
       P0[0] - P_ref[0],
@@ -26,7 +32,7 @@ function set3dViewingMatrix(P0,P_ref,V){
     return matrix;
   }
   
-  function ortographicProjection(xw_min,xw_max,yw_min,yw_max,z_near,z_far){
+  ortographicProjection(xw_min,xw_max,yw_min,yw_max,z_near,z_far){
     let matrix = [
       2/(xw_max-xw_min), 0, 0, 0,
       0, 2/(yw_max-yw_min), 0, 0,
@@ -36,7 +42,7 @@ function set3dViewingMatrix(P0,P_ref,V){
     return matrix;
   }
   
-  function perspectiveProjection(xw_min,xw_max,yw_min,yw_max,z_near,z_far){
+  perspectiveProjection(xw_min,xw_max,yw_min,yw_max,z_near,z_far){
     let matrix = [
       -(2*z_near)/(xw_max-xw_min), 0, 0, 0,
       0, -(2*z_near)/(yw_max-yw_min), 0, 0,
@@ -46,7 +52,7 @@ function set3dViewingMatrix(P0,P_ref,V){
     return matrix;
   }
   
-  function crossProduct(v1,v2){
+  crossProduct(v1,v2){
     let result = [
         v1[1]*v2[2] - v1[2]*v2[1],
         v1[2]*v2[0] - v1[0]*v2[2],
@@ -55,8 +61,9 @@ function set3dViewingMatrix(P0,P_ref,V){
     return result;
   }
   
-  function unitVector(v){ 
+  unitVector(v){ 
     let result = [];
     let vModulus = vectorModulus(v);
     return v.map(function(x) { return x/vModulus; });
   }
+}
