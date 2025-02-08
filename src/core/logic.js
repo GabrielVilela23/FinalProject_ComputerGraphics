@@ -9,7 +9,8 @@ export class Logic{
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         // Com base no tempo ir criando os inimigos
         this.currentScene.update(keyboard);
-        this.currentScene.draw(gl, program);
+        //this.currentCam.update();
+        this.currentScene.draw(gl, program, this.currentCam.viewMatrix);
 
         requestAnimationFrame((timestamp) => this.loop(gl, program, keyboard)); 
             // console.log("Rodando um frame");

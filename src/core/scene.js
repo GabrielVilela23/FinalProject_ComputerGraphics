@@ -4,9 +4,9 @@ export class Scene{
         this.objects_updatable = [];
     }
     addObject(object, gl){
-        object.createPositionBuffer(gl);
         if(object.drawable){
-        this.objects_drawable.push(object);
+            object.createPositionBuffer(gl);
+            this.objects_drawable.push(object);
         }
         if(object.updatable){
             this.objects_updatable.push(object);
@@ -15,7 +15,7 @@ export class Scene{
     update(keyboard){
         this.objects_updatable.forEach((obj) => obj.update(keyboard));
     }
-    draw(gl, program){ // Vou ter que passar a camera como parâmetro
-        this.objects_drawable.forEach((obj) => obj.draw(gl, program));
+    draw(gl, program, viewMatrix){ // Vou ter que passar a camera como parâmetro
+        this.objects_drawable.forEach((obj) => obj.draw(gl, program, viewMatrix));
     }
 }
