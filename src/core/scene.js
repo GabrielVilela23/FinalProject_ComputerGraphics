@@ -1,21 +1,15 @@
 export class Scene{
     constructor(){
-        this.objects_drawable = [];
-        this.objects_updatable = [];
+        this.objects = [];
     }
     addObject(object, gl){
-        if(object.drawable){
-            object.createPositionBuffer(gl);
-            this.objects_drawable.push(object);
-        }
-        if(object.updatable){
-            this.objects_updatable.push(object);
-        }
+        object.createPositionBuffer(gl);
+        this.objects.push(object);
     }
     update(keyboard){
-        this.objects_updatable.forEach((obj) => obj.update(keyboard));
+        this.objects.forEach((obj) => obj.update(keyboard));
     }
     draw(gl, program, viewMatrix, projectionMatrix){ // Vou ter que passar a camera como parâmetro
-        this.objects_drawable.forEach((obj) => obj.draw(gl, program, viewMatrix, projectionMatrix));
+        this.objects.forEach((obj) => obj.draw(gl, program, viewMatrix, projectionMatrix));
     }
 }

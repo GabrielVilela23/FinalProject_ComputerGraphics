@@ -54,8 +54,6 @@ export class Triangulo{
         mat4.multiply(this.uModelMatrix, this.uModelMatrix, this.baricentro);
     }
     draw(gl, program,viewMatrix, projectionMatrix){ // executa varias vezes no loop
-        // Falta criar matrizes de tranformaçoes lineares que mudam a posicao dos pontos do objeto com base na lógica de cada objeto no update
-
         const positionLocation = gl.getAttribLocation(program, `aPosition`);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
