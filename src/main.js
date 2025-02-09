@@ -16,15 +16,16 @@ async function main(){
     // Criamos uma cena e definimos os objetos que queremos inserir nela e os desenhamos
     const scene = new Scene();
     const camera =  new Camera(
+                    new Float32Array([0.0, 3.0, -3.0]),
                     new Float32Array([0.0, 0.0, 0.0]),
-                    new Float32Array([0, 0.0, -1]),
-                    new Float32Array([0.0, 1.0, 0])
-                            );
+                    new Float32Array([0.0, 1.0, 0]),
+                    canvas
+                    );
     const logic = new Logic(camera, scene); // é tipo o loop do jogo com uma cena e uma camera inicial
 
     const triangulo = new Triangulo();
     scene.addObject(triangulo, gl);
-    scene.draw(gl, program, camera.viewMatrix);
+    scene.draw(gl, program, camera.viewMatrix, camera.projectionMatrix);
 
     // Atualizamos a lógica/posição e redesenhamos os objetos que estão na cena tudo dentro desse loop
     

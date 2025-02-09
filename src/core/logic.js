@@ -10,7 +10,7 @@ export class Logic{
         // Com base no tempo ir criando os inimigos
         this.currentScene.update(keyboard);
         //this.currentCam.update();
-        this.currentScene.draw(gl, program, this.currentCam.viewMatrix);
+        this.currentScene.draw(gl, program, this.currentCam.viewMatrix, this.currentCam.projectionMatrix);
 
         requestAnimationFrame((timestamp) => this.loop(gl, program, keyboard)); 
             // console.log("Rodando um frame");

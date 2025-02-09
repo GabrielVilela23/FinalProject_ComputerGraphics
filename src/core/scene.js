@@ -15,7 +15,7 @@ export class Scene{
     update(keyboard){
         this.objects_updatable.forEach((obj) => obj.update(keyboard));
     }
-    draw(gl, program, viewMatrix){ // Vou ter que passar a camera como parâmetro
-        this.objects_drawable.forEach((obj) => obj.draw(gl, program, viewMatrix));
+    draw(gl, program, viewMatrix, projectionMatrix){ // Vou ter que passar a camera como parâmetro
+        this.objects_drawable.forEach((obj) => obj.draw(gl, program, viewMatrix, projectionMatrix));
     }
 }

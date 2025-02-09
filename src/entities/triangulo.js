@@ -53,7 +53,7 @@ export class Triangulo{
         mat4.multiply(this.uModelMatrix, this.uModelMatrix, this.translateMatrix);
         mat4.multiply(this.uModelMatrix, this.uModelMatrix, this.baricentro);
     }
-    draw(gl, program,viewMatrix){ // executa varias vezes no loop
+    draw(gl, program,viewMatrix, projectionMatrix){ // executa varias vezes no loop
         // Falta criar matrizes de tranformaçoes lineares que mudam a posicao dos pontos do objeto com base na lógica de cada objeto no update
 
         const positionLocation = gl.getAttribLocation(program, `aPosition`);
@@ -65,6 +65,8 @@ export class Triangulo{
         gl.uniformMatrix4fv(uModelMatrixLocation, false, this.uModelMatrix);
         const uViewMatrixLocation = gl.getUniformLocation(program, "uViewMatrix");
         gl.uniformMatrix4fv(uViewMatrixLocation, false, viewMatrix);
+        const uProjectionMatrixLocation = gl.getUniformLocation(program, "uProjectionMatrix");
+        gl.uniformMatrix4fv(uProjectionMatrixLocation, false, projectionMatrix);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 }
