@@ -19,7 +19,11 @@
   "homepage": "https://github.com/GabrielVilela23/FinalProject_ComputerGraphics#readme",
   "description": "",
   "dependencies": {
+    "three": "^0.133.0",
     "gl-matrix": "^3.4.3",
     "vite": "^6.1.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-rc.0"
   }
 }
