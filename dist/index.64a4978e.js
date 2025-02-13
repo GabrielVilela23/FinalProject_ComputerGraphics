@@ -598,9 +598,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"goJYj":[function(require,module,exports,__globalThis) {
 var _three = require("three");
 var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
-var _modelLoaderJs = require("./modelLoader.js"); // Importa o módulo
-// URL do modelo GLB
-const monkeyUrl = new URL(require("732030551c38c9fa"));
+var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js");
 // Renderer
 const renderer = new _three.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -623,20 +621,67 @@ scene.add(ambientLight);
 const directionalLight = new _three.DirectionalLight(0xffffff, 1); // Luz direcional
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
+// Função modular para carregar modelo GLB
+function loadModel(scene, url, onLoad, onError) {
+    const assetLoader = new (0, _gltfloaderJs.GLTFLoader)();
+    assetLoader.load(url, function(gltf) {
+        const model = gltf.scene;
+        scene.add(model);
+        // Criar mixer para animações
+        const mixer = new _three.AnimationMixer(model);
+        const clips = gltf.animations;
+        // Reproduzir todas as animações
+        clips.forEach(function(clip) {
+            const action = mixer.clipAction(clip);
+            action.play();
+        });
+        // Retornar modelo e mixer para manipulação
+        if (onLoad) onLoad(model, mixer);
+    }, undefined, onError);
+}
+// URL do modelo GLB
+const monkeyUrl = new URL(require("732030551c38c9fa"));
+// Variável para rastrear o modelo carregado
+let model = null;
+let mixer = null;
 // Carregar modelo GLB com a função do módulo
-let mixer;
-mixer = (0, _modelLoaderJs.loadModel)(scene, monkeyUrl.href, function(model, mixerInstance) {
-    // Manipulações do modelo podem ser feitas aqui
+loadModel(scene, monkeyUrl.href, function(loadedModel, mixerInstance) {
+    // Configurações iniciais
+    model = loadedModel; // Atribuir o modelo carregado
     mixer = mixerInstance;
     console.log('Modelo carregado com sucesso', model);
+    model.position.set(0, 0, 0); // Posição inicial no centro da tela
 }, function(error) {
     console.error('Erro ao carregar o modelo:', error);
+});
+// Variáveis para rastrear teclas pressionadas
+const keys = {
+    w: false,
+    a: false,
+    s: false,
+    d: false
+};
+// Listener para pressionar teclas
+window.addEventListener('keydown', (event)=>{
+    if (keys.hasOwnProperty(event.key)) keys[event.key] = true;
+});
+// Listener para soltar teclas
+window.addEventListener('keyup', (event)=>{
+    if (keys.hasOwnProperty(event.key)) keys[event.key] = false;
 });
 // Loop de animação
 const clock = new _three.Clock();
 function animate() {
     if (mixer) mixer.update(clock.getDelta());
-    renderer.render(scene, camera);
+    // Mover o modelo carregado com base nas teclas pressionadas
+    if (model) {
+        if (keys.w) model.position.z -= 0.1; // Mover para frente
+        if (keys.s) model.position.z += 0.1; // Mover para trás
+        if (keys.a) model.position.x -= 0.1; // Mover para a esquerda
+        if (keys.d) model.position.x += 0.1; // Mover para a direita
+    }
+    orbit.update(); // Atualizar os controles de órbita
+    renderer.render(scene, camera); // Renderizar cena
 }
 renderer.setAnimationLoop(animate);
 // Responsividade: Redimensionar tela
@@ -646,7 +691,45 @@ window.addEventListener('resize', function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","./modelLoader.js":"54RvD","732030551c38c9fa":"ggoel"}],"ktPTu":[function(require,module,exports,__globalThis) {
+},{"732030551c38c9fa":"ggoel","three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF"}],"ggoel":[function(require,module,exports,__globalThis) {
+module.exports = require("72d20a0a7c148c4a").getBundleURL('e6MYJ') + "eastern_dragon.78c15d3a.glb" + "?" + Date.now();
+
+},{"72d20a0a7c148c4a":"81ueO"}],"81ueO":[function(require,module,exports,__globalThis) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ('' + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return '/';
+}
+function getBaseURL(url) {
+    return ('' + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ('' + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error('Origin not found');
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"ktPTu":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2010-2021 Three.js Authors
@@ -30684,37 +30767,7 @@ class MapControls extends OrbitControls {
     }
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"54RvD":[function(require,module,exports,__globalThis) {
-// modelLoader.js
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "loadModel", ()=>loadModel);
-var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js");
-var _three = require("three");
-function loadModel(scene, url, onLoadCallback, onErrorCallback) {
-    const loader = new (0, _gltfloaderJs.GLTFLoader)();
-    let mixer;
-    loader.load(url, function(gltf) {
-        const model = gltf.scene;
-        scene.add(model);
-        // Criar mixer para animações
-        mixer = new _three.AnimationMixer(model);
-        const clips = gltf.animations;
-        // Reproduzir todas as animações
-        clips.forEach(function(clip) {
-            const action = mixer.clipAction(clip);
-            action.play();
-        });
-        // Chamar o callback de sucesso
-        if (onLoadCallback) onLoadCallback(model, mixer);
-    }, undefined, function(error) {
-        // Chamar o callback de erro
-        if (onErrorCallback) onErrorCallback(error);
-    });
-    return mixer;
-}
-
-},{"three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"dVRsF":[function(require,module,exports,__globalThis) {
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"dVRsF":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GLTFLoader", ()=>GLTFLoader);
@@ -32968,44 +33021,6 @@ function buildNodeHierarchy(nodeId, parentObject, json, parser) {
     return newGeometry;
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"ggoel":[function(require,module,exports,__globalThis) {
-module.exports = require("72d20a0a7c148c4a").getBundleURL('e6MYJ') + "eastern_dragon.78c15d3a.glb" + "?" + Date.now();
-
-},{"72d20a0a7c148c4a":"81ueO"}],"81ueO":[function(require,module,exports,__globalThis) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ('' + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return '/';
-}
-function getBaseURL(url) {
-    return ('' + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ('' + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error('Origin not found');
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}]},["a6BKU","goJYj"], "goJYj", "parcelRequire94c2")
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}]},["a6BKU","goJYj"], "goJYj", "parcelRequire94c2")
 
 //# sourceMappingURL=index.64a4978e.js.map
