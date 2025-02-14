@@ -596,13 +596,13 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"goJYj":[function(require,module,exports,__globalThis) {
+var _modelLoaderJs = require("./modelLoader.js");
 var _three = require("three");
 var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
-var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js");
 // Renderer
 const renderer = new _three.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xA3A3A3);
+renderer.setClearColor(0xa3a3a3);
 document.body.appendChild(renderer.domElement);
 // Cena
 const scene = new _three.Scene();
@@ -621,67 +621,68 @@ scene.add(ambientLight);
 const directionalLight = new _three.DirectionalLight(0xffffff, 1); // Luz direcional
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
-// Função modular para carregar modelo GLB
-function loadModel(scene, url, onLoad, onError) {
-    const assetLoader = new (0, _gltfloaderJs.GLTFLoader)();
-    assetLoader.load(url, function(gltf) {
-        const model = gltf.scene;
-        scene.add(model);
-        // Criar mixer para animações
-        const mixer = new _three.AnimationMixer(model);
-        const clips = gltf.animations;
-        // Reproduzir todas as animações
-        clips.forEach(function(clip) {
-            const action = mixer.clipAction(clip);
-            action.play();
-        });
-        // Retornar modelo e mixer para manipulação
-        if (onLoad) onLoad(model, mixer);
-    }, undefined, onError);
-}
-// URL do modelo GLB
-const monkeyUrl = new URL(require("732030551c38c9fa"));
-// Variável para rastrear o modelo carregado
-let model = null;
-let mixer = null;
-// Carregar modelo GLB com a função do módulo
-loadModel(scene, monkeyUrl.href, function(loadedModel, mixerInstance) {
-    // Configurações iniciais
-    model = loadedModel; // Atribuir o modelo carregado
-    mixer = mixerInstance;
-    console.log('Modelo carregado com sucesso', model);
-    model.position.set(0, 0, 0); // Posição inicial no centro da tela
-}, function(error) {
-    console.error('Erro ao carregar o modelo:', error);
+// Endereços dos modelos
+const dragon = new URL(require("732030551c38c9fa"));
+const donut = new URL(require("241a0dc75abf333e"));
+const candy = new URL(require("d12ae0e09a1bc680"));
+const chocolate = new URL(require("968d1c82613f1801"));
+const oreo = new URL(require("1afd2588c6422083"));
+// Array global para armazenar mixers
+const mixers = [];
+// Adicionar modelos à cena com diferentes escalas
+(0, _modelLoaderJs.addModel)(scene, mixers, dragon.href, {
+    x: 0,
+    y: 0,
+    z: 0
+}, {
+    x: 1,
+    y: 1,
+    z: 1
+}); // Escala padrão
+(0, _modelLoaderJs.addModel)(scene, mixers, donut.href, {
+    x: -5,
+    y: 0,
+    z: -5
+}, {
+    x: 2,
+    y: 2,
+    z: 2
+}); // Escala 50%
+(0, _modelLoaderJs.addModel)(scene, mixers, candy.href, {
+    x: -10,
+    y: 0,
+    z: -5
+}, {
+    x: 0.05,
+    y: 0.05,
+    z: 0.05
 });
-// Variáveis para rastrear teclas pressionadas
-const keys = {
-    w: false,
-    a: false,
-    s: false,
-    d: false
-};
-// Listener para pressionar teclas
-window.addEventListener('keydown', (event)=>{
-    if (keys.hasOwnProperty(event.key)) keys[event.key] = true;
+(0, _modelLoaderJs.addModel)(scene, mixers, chocolate.href, {
+    x: -10,
+    y: 0,
+    z: 1
+}, {
+    x: 1,
+    y: 1,
+    z: 1
 });
-// Listener para soltar teclas
-window.addEventListener('keyup', (event)=>{
-    if (keys.hasOwnProperty(event.key)) keys[event.key] = false;
+(0, _modelLoaderJs.addModel)(scene, mixers, oreo.href, {
+    x: -2,
+    y: 0,
+    z: 2
+}, {
+    x: 2,
+    y: 2,
+    z: 2
 });
 // Loop de animação
 const clock = new _three.Clock();
 function animate() {
-    if (mixer) mixer.update(clock.getDelta());
-    // Mover o modelo carregado com base nas teclas pressionadas
-    if (model) {
-        if (keys.w) model.position.z -= 0.1; // Mover para frente
-        if (keys.s) model.position.z += 0.1; // Mover para trás
-        if (keys.a) model.position.x -= 0.1; // Mover para a esquerda
-        if (keys.d) model.position.x += 0.1; // Mover para a direita
-    }
-    orbit.update(); // Atualizar os controles de órbita
-    renderer.render(scene, camera); // Renderizar cena
+    const delta = clock.getDelta();
+    // Atualizar todos os mixers
+    mixers.forEach((mixer)=>mixer.update(delta));
+    orbit.update();
+    renderer.render(scene, camera);
 }
 renderer.setAnimationLoop(animate);
 // Responsividade: Redimensionar tela
@@ -691,45 +692,7 @@ window.addEventListener('resize', function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-},{"732030551c38c9fa":"ggoel","three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF"}],"ggoel":[function(require,module,exports,__globalThis) {
-module.exports = require("72d20a0a7c148c4a").getBundleURL('e6MYJ') + "eastern_dragon.78c15d3a.glb" + "?" + Date.now();
-
-},{"72d20a0a7c148c4a":"81ueO"}],"81ueO":[function(require,module,exports,__globalThis) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ('' + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return '/';
-}
-function getBaseURL(url) {
-    return ('' + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ('' + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error('Origin not found');
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"ktPTu":[function(require,module,exports,__globalThis) {
+},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","./modelLoader.js":"54RvD","732030551c38c9fa":"ggoel","241a0dc75abf333e":"6PkRE","d12ae0e09a1bc680":"dEEws","968d1c82613f1801":"2inQy","1afd2588c6422083":"adHj6"}],"ktPTu":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2010-2021 Three.js Authors
@@ -30767,7 +30730,54 @@ class MapControls extends OrbitControls {
     }
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"dVRsF":[function(require,module,exports,__globalThis) {
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"54RvD":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "loadModel", ()=>loadModel);
+parcelHelpers.export(exports, "addModel", ()=>addModel);
+var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js");
+var _three = require("three");
+function loadModel(scene, url, onLoadCallback, onErrorCallback) {
+    const loader = new (0, _gltfloaderJs.GLTFLoader)();
+    let mixer;
+    loader.load(url, function(gltf) {
+        const model = gltf.scene;
+        scene.add(model);
+        // Criar mixer para animações
+        mixer = new _three.AnimationMixer(model);
+        const clips = gltf.animations;
+        // Reproduzir todas as animações
+        clips.forEach(function(clip) {
+            const action = mixer.clipAction(clip);
+            action.play();
+        });
+        // Chamar o callback de sucesso
+        if (onLoadCallback) onLoadCallback(model, mixer);
+    }, undefined, function(error) {
+        // Chamar o callback de erro
+        if (onErrorCallback) onErrorCallback(error);
+    });
+    return mixer;
+}
+function addModel(scene, mixers, url, position, scale = {
+    x: 1,
+    y: 1,
+    z: 1
+}) {
+    const mixer = loadModel(scene, url, function(loadedModel, mixerInstance) {
+        console.log('Modelo carregado com sucesso', loadedModel);
+        // Adicionar mixer ao array global
+        mixers.push(mixerInstance);
+        // Definir posição inicial do modelo
+        loadedModel.position.set(position.x, position.y, position.z);
+        // Definir escala do modelo
+        loadedModel.scale.set(scale.x, scale.y, scale.z);
+    }, function(error) {
+        console.error('Erro ao carregar o modelo:', error);
+    });
+}
+
+},{"three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"dVRsF":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GLTFLoader", ()=>GLTFLoader);
@@ -33021,6 +33031,56 @@ function buildNodeHierarchy(nodeId, parentObject, json, parser) {
     return newGeometry;
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}]},["a6BKU","goJYj"], "goJYj", "parcelRequire94c2")
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"hegGA"}],"ggoel":[function(require,module,exports,__globalThis) {
+module.exports = require("72d20a0a7c148c4a").getBundleURL('e6MYJ') + "eastern_dragon.78c15d3a.glb" + "?" + Date.now();
+
+},{"72d20a0a7c148c4a":"81ueO"}],"81ueO":[function(require,module,exports,__globalThis) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ('' + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return '/';
+}
+function getBaseURL(url) {
+    return ('' + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ('' + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error('Origin not found');
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"6PkRE":[function(require,module,exports,__globalThis) {
+module.exports = require("ebb4de75bf9a54bc").getBundleURL('e6MYJ') + "Donut.f375a072.glb" + "?" + Date.now();
+
+},{"ebb4de75bf9a54bc":"81ueO"}],"dEEws":[function(require,module,exports,__globalThis) {
+module.exports = require("82db721dd4014693").getBundleURL('e6MYJ') + "CandyCane.2b74dccb.glb" + "?" + Date.now();
+
+},{"82db721dd4014693":"81ueO"}],"2inQy":[function(require,module,exports,__globalThis) {
+module.exports = require("33183723aa243dd").getBundleURL('e6MYJ') + "ChocolateBar.81959398.glb" + "?" + Date.now();
+
+},{"33183723aa243dd":"81ueO"}],"adHj6":[function(require,module,exports,__globalThis) {
+module.exports = require("5e0c026159106301").getBundleURL('e6MYJ') + "Oreos.b95152aa.glb" + "?" + Date.now();
+
+},{"5e0c026159106301":"81ueO"}]},["a6BKU","goJYj"], "goJYj", "parcelRequire94c2")
 
 //# sourceMappingURL=index.64a4978e.js.map
