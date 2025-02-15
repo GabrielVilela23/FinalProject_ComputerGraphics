@@ -1,0 +1,106 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    color: white;
+    font-family: 'Lexend', sans-serif;
+}
+
+/* Menu inicial */
+#menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px;
+    width: 600px;
+    max-width: 90%;
+}
+
+/* Titulo menu */
+#menu h1 {
+    font-size: 65px;
+    margin: 10px;
+    color: #ff6f61;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Pacifico', cursive;
+}
+
+/* Caixa da história */
+.story-box {
+    background: transparent;
+    border: none;
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.story-box p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+.story-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.story-box::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.story-box::-webkit-scrollbar-thumb {
+    background: #ff6f61;
+    border-radius: 10px;
+}
+
+/* Botão de iniciar jogo */
+button {
+    display: block;
+    margin: 30px auto;
+    padding: 10px 25px;
+    font-size: 16px;
+    color: white;
+    background: #ff6f61;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: #e65a50;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Creditos */
+.credits {
+    margin-top: 20px;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+}
+
+.credits p {
+    margin: 0 0 10px 0;
+}
+
+.credits span {
+    color: #ff6f61;
+}

@@ -2,6 +2,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+// Menu inicial
+document.getElementById('startGame').addEventListener('click', function () {
+    document.getElementById('menu').style.display = 'none';
+    // chamar inicio do jogo aqui ??
+});
+
 // Renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
