@@ -27,6 +27,8 @@ body {
 }
 
 #spheres-hud p{
+   font-family: 'Lexend', sans-serif;
    font-size: 3em;
+   color: white;
    margin: 0;
 }
