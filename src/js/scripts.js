@@ -136,7 +136,7 @@ function smoothRotation() {
     dragon.rotation.y += sign * rotationAmount;
 }
 
-// Loop de animação
+/// Loop de animação
 const clock = new THREE.Clock();
 function animate() {
     const delta = clock.getDelta();
