@@ -34,7 +34,7 @@ export function loadModel(scene, url, onLoadCallback, onErrorCallback) {
     return mixer;
 }
 
-export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 1 }) {
+export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 1 }, name) {
     const mixer = loadModel(
         scene,
         url,
@@ -49,6 +49,9 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
 
             // Definir escala do modelo
             loadedModel.scale.set(scale.x, scale.y, scale.z);
+
+            // Definir nome para facilitar busca
+            loadedModel.name = name;  // Definir o nome aqui (ex: "dragon")
         },
         function (error) {
             console.error('Erro ao carregar o modelo:', error);
