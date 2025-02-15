@@ -4,11 +4,10 @@ body {
 
 #health-hud{
    position: fixed;
-   left: 0;
-   top: 0;
+   left: 10px;
+   top: 10px;
 
    gap: 10px;
-   padding: 5px 10px;
    display: flex;
    flex-direction: row;
 }
@@ -20,11 +19,14 @@ body {
 
 #spheres-hud{
    position: fixed;
-   right: 0;
-   top: 0;
+   right: 10px;
+   top: 10px;
 
-   gap: 10px;
-   padding: 5px 10px;
    display: flex;
    flex-direction: row;
+}
+
+#spheres-hud p{
+   font-size: 3em;
+   margin: 0;
 }
