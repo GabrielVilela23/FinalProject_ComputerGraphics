@@ -1,4 +1,4 @@
-import { createHud, healthHud as updateHealthHud } from './hud.js';
+import { createHud, healthHud as updateHealthHud, sphereHud as updateSphereHud } from './hud.js';
 
 class objPlayer {
     constructor() {
@@ -17,6 +17,7 @@ class objPlayer {
 
     collectSpheres() {
         this.spheres++;
+        updateSphereHud(this);
     }
 }
 
