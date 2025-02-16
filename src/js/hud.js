@@ -26,11 +26,3 @@ export function createHud(player) {
    sphereHud(player);
 }
 
-if (window.prod === true) {
-    document.addEventListener('keydown', function (event) {
-        if (event.key === ' ' || event.code === 'Space') {
-            // window.player.takeDamage(1);
-            window.player.collectSpheres();
-        }
-    });
-}
