@@ -11,7 +11,7 @@ export class objPlayer {
         updateHealthHud(this);
 
         if (this.health <= 0) {
-            this.die();
+            console.log('Morto');
         }
     }
 

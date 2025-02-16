@@ -39,8 +39,6 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
         scene,
         url,
         function (loadedModel, mixerInstance) {
-            console.log('Modelo carregado com sucesso', loadedModel);
-
             // Adicionar mixer ao array global
             mixers.push(mixerInstance);
 
@@ -53,50 +51,39 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
             // Definir nome para facilitar busca
             loadedModel.name = name;
 
-            if (name === 'dragon') {                
-                const size = new THREE.Vector3(5, 5, 5); // Tamanho personalizado
-                const center = new THREE.Vector3(); // Centro do modelo
+            if (name === 'dragon') {
+                const boundingBox = new THREE.Box3().setFromObject(loadedModel);
+                const headOffset = new THREE.Vector3(0, 1.5, 10);
+                const reductionZ = 31.0;
 
-                // Criar uma bounding box personalizada
-                const boundingBox = new THREE.Box3(
-                    new THREE.Vector3().copy(center).sub(size.multiplyScalar(0.5)), // min
-                    new THREE.Vector3().copy(center).add(size.multiplyScalar(0.5))  // max
-                );
-
-                // Salvar a bounding box no userData do modelo
+                boundingBox.min.z += reductionZ / 2;
+                boundingBox.max.z -= reductionZ / 2;
+                boundingBox.min.add(headOffset);
+                boundingBox.max.add(headOffset);
                 loadedModel.userData.boundingBox = boundingBox;
-                // loadedModel.geometry.boundingBox = boundingBox;
-
-                // Criar um BoxHelper personalizado com o tamanho da bounding box
+            
                 if (window.prod === true) {
-                    const boxSize = new THREE.Vector3();
-                    boundingBox.getSize(boxSize); // Obter o tamanho da bounding box
-
-                    const boxGeometry = new THREE.BoxGeometry(boxSize.x, boxSize.y, boxSize.z);
-                    const boxEdges = new THREE.EdgesGeometry(boxGeometry);
-                    const boxMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 }); // Cor amarela
-                    const boxHelper = new THREE.LineSegments(boxEdges, boxMaterial);
-
-                    // Posicionar o BoxHelper no centro da bounding box
-                    const boxCenter = new THREE.Vector3();
-                    boundingBox.getCenter(boxCenter);
-                    boxHelper.position.copy(boxCenter);
-
-                    // Adicionar o BoxHelper à cena
+                    const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
                     scene.add(boxHelper);
-
-                    // Atualizar a bounding box manualmente no loop de renderização
+            
                     loadedModel.userData.updateBoundingBox = () => {
-                        boundingBox.setFromObject(loadedModel); // Atualizar a bounding box com base no modelo
-                        boxHelper.position.copy(loadedModel.position); // Atualizar a posição do BoxHelper
+                        boundingBox.setFromObject(loadedModel);
+            
+                        boundingBox.min.z += reductionZ / 2;
+                        boundingBox.max.z -= reductionZ / 2;
+                        boundingBox.min.add(headOffset);
+                        boundingBox.max.add(headOffset);
+            
+                        boxHelper.box = boundingBox;
                     };
                 }
-            }
+            }            
             else {
                 loadedModel.userData.boundingBox = new THREE.Box3().setFromObject(loadedModel);
-                
+
                 if (window.prod) {
-                    const boxHelper = new THREE.BoxHelper(loadedModel, 0xff0000);
+                    const color = name === 'collectible' ? 0x0000ff : 0xff0000;
+                    const boxHelper = new THREE.BoxHelper(loadedModel, color);
                     scene.add(boxHelper);
                 }
             }
