@@ -55,27 +55,24 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
                 const boundingBox = new THREE.Box3().setFromObject(loadedModel);
                 const headOffset = new THREE.Vector3(0, 1.5, 10);
                 const reductionZ = 31.0;
-
+                
                 boundingBox.min.z += reductionZ / 2;
                 boundingBox.max.z -= reductionZ / 2;
                 boundingBox.min.add(headOffset);
                 boundingBox.max.add(headOffset);
                 loadedModel.userData.boundingBox = boundingBox;
-            
-                if (window.prod === true) {
-                    const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
-                    scene.add(boxHelper);
-            
-                    loadedModel.userData.updateBoundingBox = () => {
-                        boundingBox.setFromObject(loadedModel);
-            
-                        boundingBox.min.z += reductionZ / 2;
-                        boundingBox.max.z -= reductionZ / 2;
-                        boundingBox.min.add(headOffset);
-                        boundingBox.max.add(headOffset);
-            
-                        boxHelper.box = boundingBox;
-                    };
+                
+                const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
+                if (window.prod === true) scene.add(boxHelper);
+                
+                loadedModel.userData.updateBoundingBox = () => {
+                    boundingBox.setFromObject(loadedModel);
+                    boundingBox.min.z += reductionZ / 2;
+                    boundingBox.max.z -= reductionZ / 2;
+                    boundingBox.min.add(headOffset);
+                    boundingBox.max.add(headOffset);
+
+                    if (window.prod === true) boxHelper.box = boundingBox;
                 }
             }            
             else {
