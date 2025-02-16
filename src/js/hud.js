@@ -12,6 +12,16 @@ export function healthHud(player) {
     }
 }
 
+export function removeHealthHud() {
+    const healthBar = document.getElementById('health-hud');
+    healthBar.innerHTML = '';
+}
+
+export function removeSphereHud() {
+    const spheresCounter = document.getElementById('spheres-hud');
+    spheresCounter.innerHTML = '';
+}
+
 export function sphereHud(player) {
     const pElement = document.createElement('p');
     pElement.innerHTML = 'Esferas: ' + (player.spheres).toString().padStart(2, '0');
@@ -24,4 +34,9 @@ export function sphereHud(player) {
 export function createHud(player) {
    healthHud(player);
    sphereHud(player);
+}
+
+export function removeHud() {
+    removeHealthHud();
+    removeSphereHud();
 }
