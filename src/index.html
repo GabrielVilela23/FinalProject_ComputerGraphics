@@ -9,7 +9,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lexend:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/hud.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/screen.css" />
     <title>Dragon Fly</title>
 </head>
 
@@ -20,7 +20,7 @@
 
     <script src="./js/scripts.js" type="module"></script>
     <!-- Menu inicial -->
-    <div id="menu">
+    <div id="menu" class="screen">
         <h1>Dragon Fly</h1>
         <div class="story-box">
             <p>
@@ -40,12 +40,35 @@
                 consectetur elit. Praesent a scelerisque risus, vitae congue enim.
             </p>
         </div>
-        <button id="startGame">Iniciar Jogo</button>
+        <button id="start-btn">Iniciar Jogo</button>
         <div class="credits">
             <p>Desenvolvido por: <span>Arissa Chikami, Brenda Uemura, Gabriel Santos, Gabriel Vilela, Gustavo Chiato,
                     Livia
                     Canuto, Murilo Gomes</span></p>
         </div>
+    </div>
+    <!-- Tela de Win Game -->
+    <div id="win-game" class="screen hidden">
+        <h1>Você Venceu!</h1>
+        <div class="story-box">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus non tortor nec luctus. Etiam
+                viverra
+                consequat lorem, eget sagittis neque interdum et. Integer hendrerit odio a ipsum volutpat pellentesque. Sed
+                urna
+                metus, consectetur eget faucibus sed, efficitur vitae augue. Cras vel mi a ex facilisis lobortis quis quis
+                sapien.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus non tortor nec luctus. Etiam
+                viverra
+            </p>
+        </div>
+        <button id="win-btn">Jogar novamente</button>
+    </div>
+    
+    <!-- Tela de Game Over -->
+    <div id="game-over" class="screen hidden">
+        <h1>Game Over</h1>
+        <button id="game-over-btn">Reiniciar Jogo</button>
     </div>
 </body>
 

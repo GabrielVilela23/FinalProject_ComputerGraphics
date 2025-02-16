@@ -11,8 +11,7 @@ body {
     font-family: 'Lexend', sans-serif;
 }
 
-/* Menu inicial */
-#menu {
+.screen {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -21,19 +20,26 @@ body {
     text-align: center;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Sombra sutil */
     width: 600px;
     max-width: 90%;
 }
 
-/* Titulo menu */
-#menu h1 {
+.screen h1 {
     font-size: 65px;
     margin: 10px;
-    color: #ff6f61;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #ff6f61;
+}
+
+#menu h1 {
     font-family: 'Pacifico', cursive;
 }
+
+.hidden {
+    display: none; /* Esconde as telas inicialmente */
+}
+
 
 /* Caixa da história */
 .story-box {
