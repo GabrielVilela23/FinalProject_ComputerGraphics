@@ -1,6 +1,6 @@
 import { createHud, healthHud as updateHealthHud, sphereHud as updateSphereHud } from './hud.js';
 
-class objPlayer {
+export class objPlayer {
     constructor() {
         this.health = 5;
         this.spheres = 0;
@@ -20,6 +20,3 @@ class objPlayer {
         updateSphereHud(this);
     }
 }
-
-window.player = new objPlayer();
-createHud(window.player);
