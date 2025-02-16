@@ -25,4 +25,3 @@ export function createHud(player) {
    healthHud(player);
    sphereHud(player);
 }
-
