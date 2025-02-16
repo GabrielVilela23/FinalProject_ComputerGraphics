@@ -1,11 +1,13 @@
+// Imports
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { loadModel, addModel } from './modelLoader.js';
+import { Camera, updateCameraPosition } from '../core/camera.js';
 import { checkCollisions } from './collision.js';
+import { addModel } from './modelLoader.js';
 import { objPlayer } from './player.js';
 import { createHud } from './hud.js';
 import * as THREE from 'three';
 
-// Logic
+// Lógica do Jogo
 window.prod = false;
 window.player = new objPlayer();
 createHud(window.player);
@@ -19,18 +21,47 @@ document.body.appendChild(renderer.domElement);
 // Cena
 const scene = new THREE.Scene();
 
-// Câmera
-const camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-);
-camera.position.set(10, 10, 10);
+// Camera
+const P0 = [10, 10, 10];
+const P_ref = [2, 1, 1];
+const V = [0, 1, 0];
+const camera = new Camera(P0, P_ref, V, renderer.domElement);
 
-// Controles orbitais
-const orbit = new OrbitControls(camera, renderer.domElement);
-orbit.update();          // Atualiza os controles
+// Orbitais
+const orbit = new OrbitControls(camera.three, renderer.domElement);
+orbit.update();
+
+/// Loop de animação
+const clock = new THREE.Clock();
+function animate() {
+    const delta = clock.getDelta();
+
+    mixers.forEach((mixer) => mixer.update(delta));
+    smoothRotation();  // Chama a suavização da rotação
+
+    // Atualização: Orbitais
+    orbit.update();
+
+    // Atulização: Posição da câmera
+    updateCameraPosition(scene, camera);
+
+    // Atulização: Posição da caixa de colissão dos modelos
+    scene.traverse(child => {
+        if (child.isObject3D && child.userData.updateBoundingBox) {
+            child.userData.updateBoundingBox();
+        }
+    });
+
+    // Atulização: Verificação se houve colissão entre os modelos
+    checkCollisions(scene);
+
+    // Render
+    renderer.render(scene, camera.three);
+}
+
+
+
+
 
 // Adicionar luzes à cena
 const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
@@ -52,10 +83,18 @@ const mixers = [];
 
 // Adicionar modelos à cena com diferentes escalas
 addModel(scene, mixers, dragon.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, "dragon");
-addModel(scene, mixers, donut.href, { x: -5, y: 0, z: -5 }, { x: 3, y: 3, z: 3 }, "donut");
-addModel(scene, mixers, candy.href, { x: -10, y: 0, z: -5 }, { x: 0.05, y: 0.05, z: 0.05 }, "candy");
-addModel(scene, mixers, chocolate.href, { x: -10, y: 0, z: 1 }, { x: 2, y: 2, z: 2 }, "chocolate");
-addModel(scene, mixers, oreo.href, { x: -2, y: 0, z: 2 }, { x: 4, y: 4, z: 4 }, "oreo");
+addModel(scene, mixers, donut.href, { x: -5, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -10, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -15, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -20, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -25, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+
+addModel(scene, mixers, oreo.href, { x: 5, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 10, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 15, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+
 
 // Funções de movimentação do dragão
 function moveDragonX(distance) {
@@ -138,25 +177,6 @@ function smoothRotation() {
     const sign = Math.sign(deltaRotation);
     const rotationAmount = Math.min(Math.abs(deltaRotation), rotationSpeed);
     dragon.rotation.y += sign * rotationAmount;
-}
-
-/// Loop de animação
-const clock = new THREE.Clock();
-function animate() {
-    const delta = clock.getDelta();
-
-    mixers.forEach((mixer) => mixer.update(delta));
-    smoothRotation();  // Chama a suavização da rotação
-    orbit.update();
-
-    scene.traverse(child => {
-        if (child.isObject3D && child.userData.updateBoundingBox) {
-            child.userData.updateBoundingBox();
-        }
-    });
-    checkCollisions(scene);
-
-    renderer.render(scene, camera);
 }
 
 renderer.setAnimationLoop(animate);
