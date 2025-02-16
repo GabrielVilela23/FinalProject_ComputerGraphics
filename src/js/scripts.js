@@ -9,8 +9,13 @@ import * as THREE from 'three';
 
 // Lógica do Jogo
 window.prod = false;
+
 window.player = new objPlayer();
 createHud(window.player);
+
+const deafultVelocity = 0.5;
+let actualVelocity = 1;
+let cameraOption = 0;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer();
@@ -31,6 +36,34 @@ const camera = new Camera(P0, P_ref, V, renderer.domElement);
 const orbit = new OrbitControls(camera.three, renderer.domElement);
 orbit.update();
 
+// Controles
+document.addEventListener('keydown', function (event) {
+    // Troca de câmera
+    if (event.key === 'r' || event.key === 'R') {
+        cameraOption = (cameraOption + 1) % 2;
+    }
+
+    if (event.key === 'w' || event.key === 'W') {
+        actualVelocity = (actualVelocity + 1) % 2;
+    }
+
+    // Movimentação
+    const dragon = scene.getObjectByName("dragon");
+    if (dragon) {
+        if (event.key === 's' || event.key === 'S') {
+            dragon.position.z -= deafultVelocity;
+        }
+
+        if (event.key === 'a' || event.key === 'A') {
+            dragon.position.x -= deafultVelocity;
+        }
+
+        if (event.key === 'd' || event.key === 'D') {
+            dragon.position.x += deafultVelocity;
+        }
+    }
+});
+
 /// Loop de animação
 const clock = new THREE.Clock();
 function animate() {
@@ -43,7 +76,7 @@ function animate() {
     orbit.update();
 
     // Atulização: Posição da câmera
-    updateCameraPosition(scene, camera);
+    updateCameraPosition(scene, camera, cameraOption);
 
     // Atulização: Posição da caixa de colissão dos modelos
     scene.traverse(child => {
@@ -54,6 +87,12 @@ function animate() {
 
     // Atulização: Verificação se houve colissão entre os modelos
     checkCollisions(scene);
+
+    // Atualização: Posição do Dragão
+    const dragon = scene.getObjectByName('dragon');
+    if (dragon){
+        dragon.position.z += actualVelocity * deafultVelocity;
+    }
 
     // Render
     renderer.render(scene, camera.three);
@@ -83,17 +122,17 @@ const mixers = [];
 
 // Adicionar modelos à cena com diferentes escalas
 addModel(scene, mixers, dragon.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, "dragon");
-addModel(scene, mixers, donut.href, { x: -5, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
-addModel(scene, mixers, donut.href, { x: -10, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
-addModel(scene, mixers, donut.href, { x: -15, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
-addModel(scene, mixers, donut.href, { x: -20, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
-addModel(scene, mixers, donut.href, { x: -25, y: 0, z: 11 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -5, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -10, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -15, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -20, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, "collectible");
+addModel(scene, mixers, donut.href, { x: -25, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, "collectible");
 
-addModel(scene, mixers, oreo.href, { x: 5, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
-addModel(scene, mixers, oreo.href, { x: 10, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
-addModel(scene, mixers, oreo.href, { x: 15, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
-addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
-addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 11 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 5, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 10, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 15, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
+addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
 
 
 // Funções de movimentação do dragão
@@ -144,28 +183,6 @@ window.addEventListener('resize', function () {
 // Variáveis para controlar a rotação
 let targetRotation = 0;  // Rotações alvo para o dragão
 const rotationSpeed = 0.05; // Velocidade da rotação suave
-
-document.addEventListener('keydown', (event) => {
-    const step = 0.3; // Passo de movimento
-
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo do dragão
-    if (!dragon) return;
-
-    switch (event.key) {
-        case 'w':  // Mover para frente
-            dragon.position.z += step;
-            break;
-        case 's':  // Mover para trás
-            dragon.position.z -= step;
-            break;
-        case 'a':  // Mover para a esquerda
-            dragon.position.x += step;
-            break;
-        case 'd':  // Mover para a direita
-            dragon.position.x -= step;
-            break;
-    }
-});
 
 // Função para suavizar a rotação do dragão
 function smoothRotation() {
