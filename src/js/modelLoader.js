@@ -24,7 +24,6 @@ export function loadModel(scene, url, onLoadCallback, onErrorCallback) {
 
             // Chamar o callback de sucesso
             if (onLoadCallback) onLoadCallback(model, mixer);
-
         },
         undefined,
         function (error) {
@@ -34,4 +33,29 @@ export function loadModel(scene, url, onLoadCallback, onErrorCallback) {
     );
 
     return mixer;
+}
+
+export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 1 }, name) {
+    const mixer = loadModel(
+        scene,
+        url,
+        function (loadedModel, mixerInstance) {
+            console.log('Modelo carregado com sucesso', loadedModel);
+
+            // Adicionar mixer ao array global
+            mixers.push(mixerInstance);
+
+            // Definir posição inicial do modelo
+            loadedModel.position.set(position.x, position.y, position.z);
+
+            // Definir escala do modelo
+            loadedModel.scale.set(scale.x, scale.y, scale.z);
+
+            // Definir nome para facilitar busca
+            loadedModel.name = name;  // Definir o nome aqui (ex: "dragon")
+        },
+        function (error) {
+            console.error('Erro ao carregar o modelo:', error);
+        }
+    );
 }
