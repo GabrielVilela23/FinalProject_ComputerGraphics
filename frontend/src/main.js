@@ -5,6 +5,7 @@ import { Scene } from "./core/scene.js";
 import { Triangulo } from "./entities/triangulo.js";
 import { Keyboard } from "./core/input.js"
 import { Quadrado } from "./entities/quadrado.js";
+import { Dragon } from "./entities/dragon.js";
 async function main(){
     const {canvas, gl, program} = await initWebGL();    
     
@@ -22,10 +23,18 @@ async function main(){
                     canvas
                     );
     const logic = new Logic(camera, scene); // é tipo o loop do jogo com uma cena e uma camera inicial
-    const quadrado = new Quadrado();
     //const triangulo = new Triangulo();
     //scene.addObject(triangulo, gl);
+    
+    const quadrado = new Quadrado();
     scene.addObject(quadrado, gl);
+
+    try{
+        const dragon = await Dragon.CreateDragon("src/assets/eastern_dragon.glb");
+        console.log("dragao com array buffer: ", dragon.arrayBuffer);
+    }catch(error){
+        console.error("deu esse erro:", error);
+    }
     scene.draw(gl, program, camera.viewMatrix, camera.projectionMatrix);
 
     // Atualizamos a lógica/posição e redesenhamos os objetos que estão na cena tudo dentro desse loop
@@ -41,6 +50,8 @@ main();
 
 function initCanvas(){
     const canvas = document.querySelector("#canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     canvas.addEventListener("click", () => {
         canvas.focus();
     });
