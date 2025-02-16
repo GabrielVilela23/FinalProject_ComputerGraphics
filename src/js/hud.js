@@ -1,5 +1,4 @@
 import heartURL from '../img/heart.png';
-const prod = true;
 
 export function healthHud(player) {
     const healthBar = document.getElementById('health-hud');
@@ -27,7 +26,7 @@ export function createHud(player) {
    sphereHud(player);
 }
 
-if (prod) {
+if (window.prod === true) {
     document.addEventListener('keydown', function (event) {
         if (event.key === ' ' || event.code === 'Space') {
             // window.player.takeDamage(1);
