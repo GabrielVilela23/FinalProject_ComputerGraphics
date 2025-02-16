@@ -1,4 +1,3 @@
-// modelLoader.js
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as THREE from 'three';
 
@@ -40,8 +39,6 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
         scene,
         url,
         function (loadedModel, mixerInstance) {
-            console.log('Modelo carregado com sucesso', loadedModel);
-
             // Adicionar mixer ao array global
             mixers.push(mixerInstance);
 
@@ -52,7 +49,41 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
             loadedModel.scale.set(scale.x, scale.y, scale.z);
 
             // Definir nome para facilitar busca
-            loadedModel.name = name;  // Definir o nome aqui (ex: "dragon")
+            loadedModel.name = name;
+
+            if (name === 'dragon') {
+                const boundingBox = new THREE.Box3().setFromObject(loadedModel);
+                const headOffset = new THREE.Vector3(0, 1.5, 10);
+                const reductionZ = 31.0;
+                
+                boundingBox.min.z += reductionZ / 2;
+                boundingBox.max.z -= reductionZ / 2;
+                boundingBox.min.add(headOffset);
+                boundingBox.max.add(headOffset);
+                loadedModel.userData.boundingBox = boundingBox;
+                
+                const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
+                if (window.prod === true) scene.add(boxHelper);
+                
+                loadedModel.userData.updateBoundingBox = () => {
+                    boundingBox.setFromObject(loadedModel);
+                    boundingBox.min.z += reductionZ / 2;
+                    boundingBox.max.z -= reductionZ / 2;
+                    boundingBox.min.add(headOffset);
+                    boundingBox.max.add(headOffset);
+
+                    if (window.prod === true) boxHelper.box = boundingBox;
+                }
+            }            
+            else {
+                loadedModel.userData.boundingBox = new THREE.Box3().setFromObject(loadedModel);
+
+                if (window.prod) {
+                    const color = name === 'collectible' ? 0x0000ff : 0xff0000;
+                    const boxHelper = new THREE.BoxHelper(loadedModel, color);
+                    scene.add(boxHelper);
+                }
+            }
         },
         function (error) {
             console.error('Erro ao carregar o modelo:', error);
