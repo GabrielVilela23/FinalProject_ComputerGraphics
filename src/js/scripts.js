@@ -1,6 +1,14 @@
-import { loadModel, addModel } from './modelLoader.js';
-import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { loadModel, addModel } from './modelLoader.js';
+import { checkCollisions } from './collision.js';
+import { objPlayer } from './player.js';
+import { createHud } from './hud.js';
+import * as THREE from 'three';
+
+// Logic
+window.prod = false;
+window.player = new objPlayer();
+createHud(window.player);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer();
@@ -99,27 +107,23 @@ let targetRotation = 0;  // Rotações alvo para o dragão
 const rotationSpeed = 0.05; // Velocidade da rotação suave
 
 document.addEventListener('keydown', (event) => {
-    const step = 0.1;
+    const step = 0.3; // Passo de movimento
 
     const dragon = scene.getObjectByName("dragon");  // Buscar o modelo do dragão
     if (!dragon) return;
 
     switch (event.key) {
-        case 'w':  // Mover para frente e rotacionar suavemente para frente
-            dragon.position.z -= step;
-            targetRotation = 0;  // Rota para frente
-            break;
-        case 's':  // Mover para trás e rotacionar suavemente para trás
+        case 'w':  // Mover para frente
             dragon.position.z += step;
-            targetRotation = Math.PI; // Rota para trás
             break;
-        case 'a':  // Mover para a esquerda e rotacionar suavemente para a esquerda
-            dragon.position.x -= step;
-            targetRotation = Math.PI / 2;  // Rota 90° para a esquerda
+        case 's':  // Mover para trás
+            dragon.position.z -= step;
             break;
-        case 'd':  // Mover para a direita e rotacionar suavemente para a direita
+        case 'a':  // Mover para a esquerda
             dragon.position.x += step;
-            targetRotation = -Math.PI / 2;  // Rota 90° para a direita
+            break;
+        case 'd':  // Mover para a direita
+            dragon.position.x -= step;
             break;
     }
 });
@@ -144,6 +148,14 @@ function animate() {
     mixers.forEach((mixer) => mixer.update(delta));
     smoothRotation();  // Chama a suavização da rotação
     orbit.update();
+
+    scene.traverse(child => {
+        if (child.isObject3D && child.userData.updateBoundingBox) {
+            child.userData.updateBoundingBox();
+        }
+    });
+    checkCollisions(scene);
+
     renderer.render(scene, camera);
 }
 
