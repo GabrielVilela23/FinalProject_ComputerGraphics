@@ -44,23 +44,24 @@ function topDownVision(scene, camera) {
     camera.three.rotation.z = THREE.MathUtils.degToRad(-180);
 }
 
-function thirdPersonVision(scene, camera) {
+function thirdPersonVision(scene, camera, dragonRotation) {
     const dragon = scene.getObjectByName('dragon');
     if (!dragon) return;
 
+    // Offset da câmera em relação ao dragão
     const cameraOffset = new THREE.Vector3(0, 15, -15);
-    const offsetPosition = dragon.position.clone().add(cameraOffset);
+    const offsetPosition = dragon.position.clone().add(cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), dragonRotation));
     camera.three.position.copy(offsetPosition);
 
+    // Ponto de foco da câmera (ligeiramente à frente do dragão)
     const lookAtOffset = new THREE.Vector3(0, 2, 5);
-    camera.three.lookAt(dragon.position.clone().add(lookAtOffset));
+    camera.three.lookAt(dragon.position.clone().add(lookAtOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), dragonRotation)));
 }
 
-export function updateCameraPosition(scene, camera, option = 0) {
+export function updateCameraPosition(scene, camera, option = 0, dragonRotation = 0) {
     if (option === 1) {
         topDownVision(scene, camera);
-    }
-    else {
-        thirdPersonVision(scene, camera);
+    } else {
+        thirdPersonVision(scene, camera, dragonRotation);
     }
 }

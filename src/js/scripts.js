@@ -14,7 +14,7 @@ window.player = new objPlayer();
 createHud(window.player);
 
 const deafultVelocity = 0.5;
-let actualVelocity = 1;
+let actualVelocity = 0;
 let cameraOption = 0;
 
 // Renderer
@@ -36,31 +36,53 @@ const camera = new Camera(P0, P_ref, V, renderer.domElement);
 const orbit = new OrbitControls(camera.three, renderer.domElement);
 orbit.update();
 
+// Variáveis para controlar a rotação
+let targetRotation = 0;  // Rotações alvo para o dragão
+const rotationSpeed = 0.05; // Velocidade da rotação suave
+
+// Função para suavizar a rotação do dragão
+function smoothRotation() {
+    const dragon = scene.getObjectByName("dragon");
+    if (!dragon) return;
+
+    // Fazendo a rotação de forma suave
+    const deltaRotation = targetRotation - dragon.rotation.y;
+    const sign = Math.sign(deltaRotation);
+    const rotationAmount = Math.min(Math.abs(deltaRotation), rotationSpeed);
+    dragon.rotation.y += sign * rotationAmount;
+}
+
 // Controles
 document.addEventListener('keydown', function (event) {
+    const dragon = scene.getObjectByName("dragon");
+    if (!dragon) return;
+
     // Troca de câmera
     if (event.key === 'r' || event.key === 'R') {
         cameraOption = (cameraOption + 1) % 2;
     }
 
+    // Movimentação e rotação
     if (event.key === 'w' || event.key === 'W') {
-        actualVelocity = (actualVelocity + 1) % 2;
+        // Movimento para frente
+        const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
+        dragon.position.add(direction.multiplyScalar(deafultVelocity));
     }
 
-    // Movimentação
-    const dragon = scene.getObjectByName("dragon");
-    if (dragon) {
-        if (event.key === 's' || event.key === 'S') {
-            dragon.position.z -= deafultVelocity;
-        }
+    if (event.key === 's' || event.key === 'S') {
+        // Movimento para trás
+        const direction = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
+        dragon.position.add(direction.multiplyScalar(deafultVelocity));
+    }
 
-        if (event.key === 'a' || event.key === 'A') {
-            dragon.position.x -= deafultVelocity;
-        }
+    if (event.key === 'a' || event.key === 'A') {
+        // Rotaciona 45 graus para a esquerda
+        targetRotation += Math.PI / 4; // 45 graus em radianos
+    }
 
-        if (event.key === 'd' || event.key === 'D') {
-            dragon.position.x += deafultVelocity;
-        }
+    if (event.key === 'd' || event.key === 'D') {
+        // Rotaciona 45 graus para a direita
+        targetRotation -= Math.PI / 4; // -45 graus em radianos
     }
 });
 
@@ -75,32 +97,23 @@ function animate() {
     // Atualização: Orbitais
     orbit.update();
 
-    // Atulização: Posição da câmera
-    updateCameraPosition(scene, camera, cameraOption);
+    // Atualização: Posição da câmera
+    const dragon = scene.getObjectByName('dragon');
+    updateCameraPosition(scene, camera, cameraOption, dragon ? dragon.rotation.y : 0);
 
-    // Atulização: Posição da caixa de colissão dos modelos
+    // Atualização: Posição da caixa de colissão dos modelos
     scene.traverse(child => {
         if (child.isObject3D && child.userData.updateBoundingBox) {
             child.userData.updateBoundingBox();
         }
     });
 
-    // Atulização: Verificação se houve colissão entre os modelos
+    // Atualização: Verificação se houve colissão entre os modelos
     checkCollisions(scene);
-
-    // Atualização: Posição do Dragão
-    const dragon = scene.getObjectByName('dragon');
-    if (dragon){
-        dragon.position.z += actualVelocity * deafultVelocity;
-    }
 
     // Render
     renderer.render(scene, camera.three);
 }
-
-
-
-
 
 // Adicionar luzes à cena
 const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
@@ -116,6 +129,7 @@ const donut = new URL('../assets/Donut.glb', import.meta.url);
 const candy = new URL('../assets/CandyCane.glb', import.meta.url);
 const chocolate = new URL('../assets/ChocolateBar.glb', import.meta.url);
 const oreo = new URL('../assets/Oreos.glb', import.meta.url);
+const scenario = new URL('../assets/Nature.glb', import.meta.url);
 
 // Array global para armazenar mixers
 const mixers = [];
@@ -134,44 +148,7 @@ addModel(scene, mixers, oreo.href, { x: 15, y: 0, z: 50 }, { x: 10, y: 10, z: 10
 addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
 addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
 
-
-// Funções de movimentação do dragão
-function moveDragonX(distance) {
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo pelo nome
-    if (dragon) {
-        dragon.position.x += distance;
-    }
-}
-
-function moveDragonY(distance) {
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo pelo nome
-    if (dragon) {
-        dragon.position.y += distance;
-    }
-}
-
-function moveDragonZ(distance) {
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo pelo nome
-    if (dragon) {
-        dragon.position.z += distance;
-    }
-}
-
-// Funções de rotação do dragão
-function rotateDragonY(angle) {
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo pelo nome
-    if (dragon) {
-        dragon.rotation.y += angle;
-    }
-}
-
-function rotateDragonX(angle) {
-    const dragon = scene.getObjectByName("dragon");  // Buscar o modelo pelo nome
-    if (dragon) {
-        dragon.rotation.x += angle;
-    }
-}
-
+addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100}, "scenario");
 
 // Responsividade: Redimensionar tela
 window.addEventListener('resize', function () {
@@ -179,21 +156,5 @@ window.addEventListener('resize', function () {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-// Variáveis para controlar a rotação
-let targetRotation = 0;  // Rotações alvo para o dragão
-const rotationSpeed = 0.05; // Velocidade da rotação suave
-
-// Função para suavizar a rotação do dragão
-function smoothRotation() {
-    const dragon = scene.getObjectByName("dragon");
-    if (!dragon) return;
-
-    // Fazendo a rotação de forma suave
-    const deltaRotation = targetRotation - dragon.rotation.y;
-    const sign = Math.sign(deltaRotation);
-    const rotationAmount = Math.min(Math.abs(deltaRotation), rotationSpeed);
-    dragon.rotation.y += sign * rotationAmount;
-}
 
 renderer.setAnimationLoop(animate);

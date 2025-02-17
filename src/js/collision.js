@@ -14,11 +14,11 @@ export function checkCollisions(scene) {
                 if (models[i].name === 'collectible' || models[j].name === 'collectible'){
                     window.player.collectSpheres();
                 }
-                else {
+                else if (models[i].name === 'oreo' || models[j].name === 'oreo') {
                     window.player.takeDamage(1);
                 }
 
-                if (models[i].name !== 'dragon') {
+                if (models[i].name !== 'dragon' && models[i].name !== 'scenario') {
                     scene.remove(models[i]);
                     if (models[i].userData.boxHelper) {
                         scene.remove(models[i].userData.boxHelper);
