@@ -130,6 +130,7 @@ const candy = new URL('../assets/CandyCane.glb', import.meta.url);
 const chocolate = new URL('../assets/ChocolateBar.glb', import.meta.url);
 const oreo = new URL('../assets/Oreos.glb', import.meta.url);
 const scenario = new URL('../assets/Nature.glb', import.meta.url);
+const espeha = new URL('../assets/esfera.glb', import.meta.url);
 
 // Array global para armazenar mixers
 const mixers = [];
@@ -149,6 +150,8 @@ addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10
 addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, "oreo");
 
 addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100}, "scenario");
+
+addModel(scene, mixers, espeha.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1}, "new");
 
 // Responsividade: Redimensionar tela
 window.addEventListener('resize', function () {
