@@ -75,6 +75,7 @@ O projeto também visa reforçar o entendimento sobre o pipeline gráfico do **W
 4.Rode o Parcel digitando o comando:
    ```bash
    npx parcel ./src/index.html
+   ```
 
 5. Ctrl + Botão Direito do Mouse em cima do endereço gerado:
 http://localhost:1234
