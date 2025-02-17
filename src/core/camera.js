@@ -1,7 +1,5 @@
 import { mat4 } from 'gl-matrix';
 import * as THREE from 'three';
-const cameraDistance = 25;
-const cameraHeight = 20;
 
 export class Camera {
     constructor(P0, P_ref, V, canvas) {
@@ -35,16 +33,35 @@ export class Camera {
     }
 }
 
-export function updateCameraPosition(scene, camera) {
+function topDownVision(scene, camera) {
     const dragon = scene.getObjectByName('dragon');
     if (!dragon) return;
 
-    const cameraOffset = new THREE.Vector3(3, cameraHeight, -cameraDistance);
+    const cameraOffset = new THREE.Vector3(0, 40, 0);
     camera.three.position.copy(dragon.position).add(cameraOffset);
-    
-    const forwardDirection = new THREE.Vector3(0, 0, 1);
-    const lookAtPosition = camera.three.position.clone().add(forwardDirection);
-    camera.three.lookAt(lookAtPosition)
-    camera.three.rotation.x = THREE.MathUtils.degToRad(220);
-    return camera;
+
+    camera.three.lookAt(dragon.position);
+    camera.three.rotation.z = THREE.MathUtils.degToRad(-180);
+}
+
+function thirdPersonVision(scene, camera, dragonRotation) {
+    const dragon = scene.getObjectByName('dragon');
+    if (!dragon) return;
+
+    // Offset da câmera em relação ao dragão
+    const cameraOffset = new THREE.Vector3(0, 15, -15);
+    const offsetPosition = dragon.position.clone().add(cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), dragonRotation));
+    camera.three.position.copy(offsetPosition);
+
+    // Ponto de foco da câmera (ligeiramente à frente do dragão)
+    const lookAtOffset = new THREE.Vector3(0, 2, 5);
+    camera.three.lookAt(dragon.position.clone().add(lookAtOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), dragonRotation)));
+}
+
+export function updateCameraPosition(scene, camera, option = 0, dragonRotation = 0) {
+    if (option === 1) {
+        topDownVision(scene, camera);
+    } else {
+        thirdPersonVision(scene, camera, dragonRotation);
+    }
 }
