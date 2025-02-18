@@ -27,7 +27,7 @@ let cameraOption = 0;
 
 // Variáveis para controlar a rotação
 let targetRotation = 0; // Rotações alvo para o dragão
-const rotationSpeed = 0.05; // Velocidade da rotação suave
+const rotationSpeed = 0.1; // Velocidade da rotação suave
 
 // Iniciar jogo
 function startGame() {
@@ -43,7 +43,7 @@ function initGame() {
     createHud(window.player);
 
     const deafultVelocity = 0.5;
-    let actualVelocity = 0;
+    let key_lock = false;
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
@@ -65,6 +65,10 @@ function initGame() {
     orbit.update();
 
     // Controles
+    document.addEventListener('keyup', function (event) {
+        key_lock = false;
+    });
+    
     document.addEventListener('keydown', function (event) {
         const dragon = scene.getObjectByName('dragon');
         if (!dragon) return;
@@ -87,21 +91,22 @@ function initGame() {
             dragon.position.add(direction.multiplyScalar(deafultVelocity));
         }
 
-        if (event.key === 'a' || event.key === 'A') {
+        if ((event.key === 'a' || event.key === 'A') && !key_lock) {
             // Rotaciona 45 graus para a esquerda
             targetRotation += Math.PI / 4; // 45 graus em radianos
+            key_lock = true;
         }
 
-        if (event.key === 'd' || event.key === 'D') {
+        if ((event.key === 'd' || event.key === 'D') && !key_lock) {
             // Rotaciona 45 graus para a direita
             targetRotation -= Math.PI / 4; // -45 graus em radianos
+            key_lock = true;
         }
     });
 
     // Redimensionar telas
     window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
