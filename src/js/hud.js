@@ -20,8 +20,8 @@ export function removeHealthHud() {
 }
 
 export function removeLavaLampsHud() {
-    const spheresCounter = document.getElementById('lava-lamp-hud');
-    spheresCounter.innerHTML = '';
+    const lavaLampHud= document.getElementById('lava-lamp-hud');
+    lavaLampHud.innerHTML = '';
 }
 
 export function removeControlsHud() {
@@ -33,7 +33,7 @@ export function lavaLampsHud(player) {
     const lavaLamp = document.getElementById('lava-lamp-hud');
     lavaLamp.innerHTML = '';
     let index;
-    for (index = 0; index < player.spheres; index++) {
+    for (index = 0; index < player.lavaLamps; index++) {
         let imgElement = document.createElement('img');
         imgElement.src = lavaLampFullURL;
 

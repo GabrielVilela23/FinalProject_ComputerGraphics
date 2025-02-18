@@ -16,7 +16,7 @@ export function checkCollisions(scene) {
         if (boxDragon.intersectsBox(box)) {
             if (models[i].name !== 'scenario') {
                 if (models[i].name === 'collectible') {
-                    window.player.collectSpheres();
+                    window.player.collectLavaLamps();
                 } else {
                     window.player.takeDamage();
                 }

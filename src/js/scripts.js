@@ -107,7 +107,7 @@ document.addEventListener('keyup', function (event) {
 
     //hack de ganhar
     if (event.key === 'l') {
-        player.collectSpheres(5);
+        player.collectLavaLamps(5);
     }
 });
 
@@ -163,7 +163,7 @@ function addObjetcs() {
     const chocolate = new URL('../assets/ChocolateBar.glb', import.meta.url);
     const oreo = new URL('../assets/Oreos.glb', import.meta.url);
     const scenario = new URL('../assets/Nature.glb', import.meta.url);
-    const sphere = new URL('../assets/lavaLamp.glb', import.meta.url);
+    const lavaLamp = new URL('../assets/lavaLamp.glb', import.meta.url);
 
     // Array global para armazenar mixers
     mixers = [];
@@ -171,11 +171,11 @@ function addObjetcs() {
     // Adicionar modelos à cena com diferentes escalas
     addModel(scene, mixers, dragon.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'dragon');
 
-    addModel(scene, mixers, sphere.href, { x: 300, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
-    addModel(scene, mixers, sphere.href, { x: 50, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
-    addModel(scene, mixers, sphere.href, { x: 150, y: 0, z: -50 }, { x: 10, y: 10, z: 10 }, 'collectible');
-    addModel(scene, mixers, sphere.href, { x: 170, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'collectible');
-    addModel(scene, mixers, sphere.href, { x: 300, y: 0, z: 100 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, lavaLamp.href, { x: 300, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, lavaLamp.href, { x: 50, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, lavaLamp.href, { x: 150, y: 0, z: -50 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, lavaLamp.href, { x: 170, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, lavaLamp.href, { x: 300, y: 0, z: 100 }, { x: 10, y: 10, z: 10 }, 'collectible');
 
     addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 35 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 70, y: 0, z: 25 }, { x: 10, y: 10, z: 10 }, 'oreo');
@@ -212,7 +212,7 @@ function animate() {
     }
 
     //Lógica de Win
-    if (player.spheres >= 5) {
+    if (player.lavaLamps >= 5) {
         winGame();
     }
 

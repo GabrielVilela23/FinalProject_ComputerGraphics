@@ -1,9 +1,9 @@
-import { healthHud as updateHealthHud, lavaLampsHud as updateSphereHud } from './hud.js';
+import { healthHud as updateHealthHud, lavaLampsHud as updateLavaLampHud } from './hud.js';
 
 export class objPlayer {
     constructor() {
         this.health = 5;
-        this.spheres = 0;
+        this.lavaLamps = 0;
     }
 
     takeDamage(damage = 1) {
@@ -15,8 +15,8 @@ export class objPlayer {
         }
     }
 
-    collectSpheres(point = 1) {
-        this.spheres += point;
-        updateSphereHud(this);
+    collectLavaLamps(point = 1) {
+        this.lavaLamps += point;
+        updateLavaLampHud(this);
     }
 }
