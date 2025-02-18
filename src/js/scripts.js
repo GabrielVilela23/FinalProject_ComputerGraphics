@@ -4,7 +4,7 @@ import { Camera, updateCameraPosition } from '../core/camera.js';
 import { checkCollisions } from './collision.js';
 import { addModel } from './modelLoader.js';
 import { objPlayer } from './player.js';
-import { createHud } from './hud.js';
+import { createHud, removeHud } from './hud.js';
 import { Screen } from './screen.js';
 import * as THREE from 'three';
 
@@ -37,7 +37,7 @@ function startGame() {
 
 function initGame() {
     // Lógica do Jogo
-    window.prod = false;
+    window.prod = true;
 
     window.player = new objPlayer();
     createHud(window.player);
@@ -68,7 +68,7 @@ function initGame() {
     document.addEventListener('keyup', function (event) {
         key_lock = false;
     });
-    
+
     document.addEventListener('keydown', function (event) {
         const dragon = scene.getObjectByName('dragon');
         if (!dragon) return;
@@ -144,7 +144,7 @@ function initGame() {
     addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
 
-    // addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
+    addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
 
     addModel(scene, mixers, espeha.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'new');
 
@@ -167,20 +167,22 @@ function smoothRotation() {
 clock = new THREE.Clock();
 function animate() {
     //Lógica de Game Over
-    // if (player.health <= 0) {
-    //     renderer.setAnimationLoop(null);
-    //     let canvas = document.querySelector('canvas');
-    //     canvas.remove();
-    //     screen.showGameOverScreen();
-    // }
+    if (player.health <= 0) {
+        renderer.setAnimationLoop(null);
+        let canvas = document.querySelector('canvas');
+        canvas.remove();
+        removeHud();
+        screen.showGameOverScreen();
+    }
 
     //Lógica de Win
-    // if (player.spheres >= 5) {
-    //     renderer.setAnimationLoop(null);
-    //     let canvas = document.querySelector('canvas');
-    //     canvas.remove();
-    //     screen.showWinScreen();
-    // }
+    if (player.spheres >= 5) {
+        renderer.setAnimationLoop(null);
+        let canvas = document.querySelector('canvas');
+        canvas.remove();
+        removeHud();
+        screen.showWinScreen();
+    }
 
     const delta = clock.getDelta();
 
