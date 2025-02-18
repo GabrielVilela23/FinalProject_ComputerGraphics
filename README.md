@@ -18,14 +18,14 @@ Este jogo foi desenvolvido por alunos da UNIFESP, campus São José dos Campos, 
 ## História
 No coração de um vale oculto, onde dragões vivem em harmonia, um jovem dragão chamado **Zé Fumaça** enfrenta um grande desafio: sua energia vital está enfraquecendo, e ele sente suas asas cada vez mais pesadas. O ancião da tribo lhe explica que isso acontece porque os dragões daquela região não conseguem metabolizar certos tipos de energia mágica concentrada nos doces espalhados pelo mundo.
 
-Mas há uma esperança! Segundo uma antiga lenda, cinco LavaLamps ancestrais, criadas pelo misterioso **Deus Humano**, têm o poder de restaurar o equilíbrio da energia dos dragões. Determinado a salvar não apenas a si mesmo, mas toda a sua tribo, Zé Fumaça parte em uma jornada épica para recuperar as esferas.
+Mas há uma esperança! Segundo uma antiga lenda, cinco objetos ancestrais misteriosos, criadas pelo misterioso **Deus Humano**, têm o poder de restaurar o equilíbrio da energia dos dragões. Determinado a salvar não apenas a si mesmo, mas toda a sua tribo, Zé Fumaça parte em uma jornada épica para recuperar as esferas.
 
 Ao longo da fase, ele precisará desviar de perigosos obstáculos açucarados e provar sua coragem para alcançar seu maior desejo: devolver a força e a liberdade ao seu povo.
 
 ---
 
 ## Objetivo do Jogo
-O objetivo deste jogo é guiar Zé Fumaça em uma jornada épica, inspirada por uma antiga lenda. Zé Fumaça parte em busca das sete esferas mágicas, capazes de realizar um desejo que pode curar não apenas suas asas debilitadas, mas também trazer esperança para toda a sua comunidade.
+O objetivo deste jogo é guiar Zé Fumaça em uma jornada épica, inspirada por uma antiga lenda. Zé Fumaça parte em busca dos cinco objetos ancestrais misteriosos, capazes de realizar um desejo que pode curar não apenas suas asas debilitadas, mas também trazer esperança para toda a sua comunidade.
 
 O jogador deverá ajudar Zé Fumaça a atravessar um ambiente desafiador, repleto de obstáculos açucarados que representam o perigo constante do excesso de glicose. O desafio envolve desviar habilmente desses perigos enquanto coleta as esferas mágicas espalhadas pelo caminho. 
 
@@ -50,6 +50,8 @@ O projeto também visa reforçar o entendimento sobre o pipeline gráfico do **W
 ## Mecânica
 - **W, A, S, D**: Movimentação
 - **R**: Alternar câmeras
+- **1**: Ligar/Desligar luz ambiente
+- **2**: Ligar/Desligar luz direcional
 
 ---
 
