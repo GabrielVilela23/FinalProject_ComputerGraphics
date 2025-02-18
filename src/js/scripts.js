@@ -35,6 +35,9 @@ let isDirectionalLightOn = true;
 let ambientLight
 let directionalLight
 
+//Velocidade
+const defaultVelocity = 2;
+
 // Iniciar jogo
 function startGame() {
     console.log('WebGL game started!');
@@ -47,8 +50,6 @@ function initGame() {
 
     window.player = new objPlayer();
     createHud(window.player);
-
-    const deafultVelocity = 1;
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
@@ -69,77 +70,6 @@ function initGame() {
     orbit = new OrbitControls(camera.three, renderer.domElement);
     orbit.update();
 
-    // Controles
-    let keysPressed = {};
-    
-    document.addEventListener('keyup', function(event) {
-        const dragon = scene.getObjectByName('dragon');
-        if (!dragon) return;
-
-        if ((event.key === 'a' || event.key === 'A')) {
-            targetRotation = dragon.rotation.y;
-        }
-
-        if ((event.key === 'd' || event.key === 'D')) {
-            targetRotation = dragon.rotation.y;
-        }
-    })
-
-    document.addEventListener('keydown', function (event) {
-        keysPressed[event.key] = true;
-    })
-
-    document.addEventListener('keyup', function (event) {
-        delete keysPressed[event.key];
-    })
-
-    document.addEventListener('keydown', function (event) {
-        const dragon = scene.getObjectByName('dragon');
-        if (!dragon) return;
-
-        // Troca de câmera
-        if (keysPressed['r'] || keysPressed['R']) {
-            cameraOption = (cameraOption + 1) % 2;
-        }
-
-        // Movimentação e rotação
-        if (keysPressed['w'] || keysPressed['W']) {
-            // Movimento para frente
-            const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
-            dragon.position.add(direction.multiplyScalar(deafultVelocity));
-        }
-
-        if (keysPressed['s'] || keysPressed['S']) {
-            // Movimento para trás
-            const direction = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
-            dragon.position.add(direction.multiplyScalar(deafultVelocity));
-        }
-
-        if (keysPressed['a'] || keysPressed['A']) {
-            targetRotation += Math.PI / 18; // 10 graus em radianos
-        }
-
-        if (keysPressed['d'] || keysPressed['D']) {
-            targetRotation -= Math.PI / 18; // -10 graus em radianos
-        }
-
-        // Alternar luz ambiente com a tecla 1
-        if (event.key === '1') {
-            toggleAmbientLight();
-        }
-
-        // Alternar luz direcional com a tecla 2
-        if (event.key === '2') {
-            toggleDirectionalLight();
-        }
-    });
-
-    // Redimensionar telas
-    window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
     // Adicionar luzes à cena
     ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
     scene.add(ambientLight);
@@ -153,6 +83,78 @@ function initGame() {
 
     renderer.setAnimationLoop(animate);
 }
+
+// Controles
+let keysPressed = {};
+
+document.addEventListener('keyup', function (event) {
+    const dragon = scene.getObjectByName('dragon');
+    if (!dragon) return;
+
+    if (event.key === 'a' || event.key === 'A') {
+        targetRotation = dragon.rotation.y;
+    }
+
+    if (event.key === 'd' || event.key === 'D') {
+        targetRotation = dragon.rotation.y;
+    }
+
+});
+
+document.addEventListener('keydown', function (event) {
+    keysPressed[event.key] = true;
+});
+
+document.addEventListener('keyup', function (event) {
+    delete keysPressed[event.key];
+});
+
+document.addEventListener('keydown', function (event) {
+    const dragon = scene.getObjectByName('dragon');
+    if (!dragon) return;
+
+    // Troca de câmera
+    if (keysPressed['r'] || keysPressed['R']) {
+        cameraOption = (cameraOption + 1) % 2;
+    }
+
+    // Movimentação e rotação
+    if (keysPressed['w'] || keysPressed['W']) {
+        // Movimento para frente
+        const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
+        dragon.position.add(direction.multiplyScalar(defaultVelocity));
+    }
+
+    if (keysPressed['s'] || keysPressed['S']) {
+        // Movimento para trás
+        const direction = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
+        dragon.position.add(direction.multiplyScalar(defaultVelocity));
+    }
+
+    if (keysPressed['a'] || keysPressed['A']) {
+        targetRotation += Math.PI / 18; // 10 graus em radianos
+    }
+
+    if (keysPressed['d'] || keysPressed['D']) {
+        targetRotation -= Math.PI / 18; // -10 graus em radianos
+    }
+
+    // Alternar luz ambiente com a tecla 1
+    if (event.key === '1') {
+        toggleAmbientLight();
+    }
+
+    // Alternar luz direcional com a tecla 2
+    if (event.key === '2') {
+        toggleDirectionalLight();
+    }
+});
+
+// Redimensionar telas
+window.addEventListener('resize', function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 //Função para adicionar objetos na tela
 function addObjetcs() {
