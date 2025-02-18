@@ -18,7 +18,7 @@ export function checkCollisions(scene) {
                 if (models[i].name === 'collectible') {
                     window.player.collectSpheres();
                 } else {
-                    window.player.takeDamage(1);
+                    window.player.takeDamage();
                 }
 
                 scene.remove(models[i]);

@@ -6,7 +6,7 @@ export class objPlayer {
         this.spheres = 0;
     }
 
-    takeDamage(damage) {
+    takeDamage(damage = 1) {
         this.health -= damage;
         updateHealthHud(this);
 
@@ -15,8 +15,8 @@ export class objPlayer {
         }
     }
 
-    collectSpheres() {
-        this.spheres++;
+    collectSpheres(point = 1) {
+        this.spheres += point;
         updateSphereHud(this);
     }
 }
