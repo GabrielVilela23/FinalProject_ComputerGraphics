@@ -99,6 +99,16 @@ document.addEventListener('keyup', function (event) {
         targetRotation = dragon.rotation.y;
     }
 
+    //hack de perder
+    if (event.key === 'ç') {
+        player.takeDamage(5);
+    }
+
+    //hack de ganhar
+    if (event.key === 'l') {
+        player.collectSpheres(5);
+    }
+
 });
 
 document.addEventListener('keydown', function (event) {
