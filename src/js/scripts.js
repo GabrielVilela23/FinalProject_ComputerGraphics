@@ -78,6 +78,11 @@ function initGame() {
             cameraOption = (cameraOption + 1) % 2;
         }
 
+        // Diminuir iluminação
+        if (event.key === 'r' || event.key === 'R') {
+            cameraOption = (cameraOption + 1) % 2;
+        }
+
         // Movimentação e rotação
         if (event.key === 'w' || event.key === 'W') {
             // Movimento para frente
@@ -118,6 +123,12 @@ function initGame() {
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
+    addObjetcs();
+
+    renderer.setAnimationLoop(animate);
+}
+
+function addObjetcs() {
     // Endereços dos modelos
     const dragon = new URL('../assets/eastern_dragon.glb', import.meta.url);
     const donut = new URL('../assets/Donut.glb', import.meta.url);
@@ -147,8 +158,6 @@ function initGame() {
     addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
 
     addModel(scene, mixers, espeha.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'new');
-
-    renderer.setAnimationLoop(animate);
 }
 
 // Função para suavizar a rotação do dragão
