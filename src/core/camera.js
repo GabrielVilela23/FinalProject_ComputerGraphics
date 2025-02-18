@@ -33,7 +33,7 @@ export class Camera {
     }
 }
 
-function topDownVision(scene, camera) {
+function topDownVision(scene, camera, dragonRotation) {
     const dragon = scene.getObjectByName('dragon');
     if (!dragon) return;
 
@@ -41,7 +41,7 @@ function topDownVision(scene, camera) {
     camera.three.position.copy(dragon.position).add(cameraOffset);
 
     camera.three.lookAt(dragon.position);
-    camera.three.rotation.z = THREE.MathUtils.degToRad(-180);
+    camera.three.rotation.z = dragonRotation + THREE.MathUtils.degToRad(180);
 }
 
 function thirdPersonVision(scene, camera, dragonRotation) {
@@ -60,7 +60,7 @@ function thirdPersonVision(scene, camera, dragonRotation) {
 
 export function updateCameraPosition(scene, camera, option = 0, dragonRotation = 0) {
     if (option === 1) {
-        topDownVision(scene, camera);
+        topDownVision(scene, camera, dragonRotation);
     } else {
         thirdPersonVision(scene, camera, dragonRotation);
     }
