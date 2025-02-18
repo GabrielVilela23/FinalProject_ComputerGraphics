@@ -29,6 +29,12 @@ let cameraOption = 0;
 let targetRotation = 0; // Rotações alvo para o dragão
 const rotationSpeed = 0.1; // Velocidade da rotação suave
 
+//Variáveis de iluminação
+let isAmbientLightOn = true;
+let isDirectionalLightOn = true;
+let ambientLight
+let directionalLight
+
 // Iniciar jogo
 function startGame() {
     console.log('WebGL game started!');
@@ -37,13 +43,12 @@ function startGame() {
 
 function initGame() {
     // Lógica do Jogo
-    window.prod = true;
+    window.prod = false;
 
     window.player = new objPlayer();
     createHud(window.player);
 
     const deafultVelocity = 1;
-    let key_lock = false;
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
@@ -65,47 +70,67 @@ function initGame() {
     orbit.update();
 
     // Controles
+    let keysPressed = {};
+    
+    document.addEventListener('keyup', function(event) {
+        const dragon = scene.getObjectByName('dragon');
+        if (!dragon) return;
+
+        if ((event.key === 'a' || event.key === 'A')) {
+            targetRotation = dragon.rotation.y;
+        }
+
+        if ((event.key === 'd' || event.key === 'D')) {
+            targetRotation = dragon.rotation.y;
+        }
+    })
+
+    document.addEventListener('keydown', function (event) {
+        keysPressed[event.key] = true;
+    })
+
     document.addEventListener('keyup', function (event) {
-        key_lock = false;
-    });
+        delete keysPressed[event.key];
+    })
 
     document.addEventListener('keydown', function (event) {
         const dragon = scene.getObjectByName('dragon');
         if (!dragon) return;
 
         // Troca de câmera
-        if (event.key === 'r' || event.key === 'R') {
+        if (keysPressed['r'] || keysPressed['R']) {
             cameraOption = (cameraOption + 1) % 2;
         }
 
-        // // Diminuir iluminação
-        // if (event.key === 'r' || event.key === 'R') {
-        //     cameraOption = (cameraOption + 1) % 2;
-        // }
-
         // Movimentação e rotação
-        if (event.key === 'w' || event.key === 'W') {
+        if (keysPressed['w'] || keysPressed['W']) {
             // Movimento para frente
             const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
             dragon.position.add(direction.multiplyScalar(deafultVelocity));
         }
 
-        if (event.key === 's' || event.key === 'S') {
+        if (keysPressed['s'] || keysPressed['S']) {
             // Movimento para trás
             const direction = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
             dragon.position.add(direction.multiplyScalar(deafultVelocity));
         }
 
-        if ((event.key === 'a' || event.key === 'A') && !key_lock) {
-            // Rotaciona 45 graus para a esquerda
-            targetRotation += Math.PI / 5; // 36 graus em radianos
-            key_lock = true;
+        if (keysPressed['a'] || keysPressed['A']) {
+            targetRotation += Math.PI / 18; // 10 graus em radianos
         }
 
-        if ((event.key === 'd' || event.key === 'D') && !key_lock) {
-            // Rotaciona 45 graus para a direita
-            targetRotation -= Math.PI / 5; // -36 graus em radianos
-            key_lock = true;
+        if (keysPressed['d'] || keysPressed['D']) {
+            targetRotation -= Math.PI / 18; // -10 graus em radianos
+        }
+
+        // Alternar luz ambiente com a tecla 1
+        if (event.key === '1') {
+            toggleAmbientLight();
+        }
+
+        // Alternar luz direcional com a tecla 2
+        if (event.key === '2') {
+            toggleDirectionalLight();
         }
     });
 
@@ -116,10 +141,10 @@ function initGame() {
     });
 
     // Adicionar luzes à cena
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
+    ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Luz direcional
+    directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Luz direcional
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
@@ -164,7 +189,6 @@ function addObjetcs() {
     addModel(scene, mixers, oreo.href, { x: 115, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'oreo');
 
     addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
-
 }
 
 // Função para suavizar a rotação do dragão
@@ -224,4 +248,16 @@ function animate() {
 
     // Render
     renderer.render(scene, camera.three);
+}
+
+// Função para alternar o estado da luz ambiente
+function toggleAmbientLight() {
+    isAmbientLightOn = !isAmbientLightOn;
+    ambientLight.visible = isAmbientLightOn;
+}
+
+// Função para alternar o estado da luz direcional
+function toggleDirectionalLight() {
+    isDirectionalLightOn = !isDirectionalLightOn;
+    directionalLight.visible = isDirectionalLightOn;
 }
