@@ -11,7 +11,7 @@
 ---
 
 ## Introdução
-Este jogo foi desenvolvido por alunos da UNIFESP, campus São José dos Campos, em 2025, como parte do projeto final da disciplina de **Computação Gráfica**, ministrada pela Drª Ana Luisa Dine Martins Lemos. O jogo **Dragon Fly** é uma reinterpretação do famoso *Flappy Bird*, mas com um toque único em 3D. O jogador irá explorar o mundo dos dragões e ajudar Zé Fumaça a resgatar as esferas mágicas para salvar seu vilarejo.
+Este jogo foi desenvolvido por alunos da UNIFESP, campus São José dos Campos, em 2025, como parte do projeto final da disciplina de **Computação Gráfica**, ministrada pela Drª Ana Luisa Dine Martins Lemos. O jogo **Dragon Fly** é uma reinterpretação do famoso *Flappy Bird*, mas com um toque único em 3D. O jogador irá explorar o mundo dos dragões e ajudar Zé Fumaça a resgatar os artefatos mágicos para salvar seu vilarejo.
 
 ---
 
@@ -27,7 +27,7 @@ Ao longo da fase, ele precisará desviar de perigosos obstáculos açucarados e 
 ## Objetivo do Jogo
 O objetivo deste jogo é guiar Zé Fumaça em uma jornada épica, inspirada por uma antiga lenda. Zé Fumaça parte em busca dos cinco objetos ancestrais misteriosos, capazes de realizar um desejo que pode curar não apenas suas asas debilitadas, mas também trazer esperança para toda a sua comunidade.
 
-O jogador deverá ajudar Zé Fumaça a atravessar um ambiente desafiador, repleto de obstáculos açucarados que representam o perigo constante do excesso de glicose. O desafio envolve desviar habilmente desses perigos enquanto coleta as esferas mágicas espalhadas pelo caminho. 
+O jogador deverá ajudar Zé Fumaça a atravessar um ambiente desafiador, repleto de obstáculos açucarados que representam o perigo constante do excesso de glicose. O desafio envolve desviar habilmente desses perigos enquanto coleta estes artefatos mágicas espalhadas pelo caminho. 
 
 Além de oferecer uma experiência divertida e desafiadora, o jogo transmite uma mensagem leve e criativa sobre a importância do equilíbrio e da superação de desafios pessoais. O sucesso do jogador será medido pela habilidade de manter Zé Fumaça em voo constante, desviando dos obstáculos e completando sua missão para que o desejo da cura possa se tornar realidade.
 
