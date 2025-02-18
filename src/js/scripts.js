@@ -138,7 +138,7 @@ function addObjetcs() {
     const chocolate = new URL('../assets/ChocolateBar.glb', import.meta.url);
     const oreo = new URL('../assets/Oreos.glb', import.meta.url);
     const scenario = new URL('../assets/Nature.glb', import.meta.url);
-    const espeha = new URL('../assets/esfera.glb', import.meta.url);
+    const sphere = new URL('../assets/lavaLamp.glb', import.meta.url);
 
     // Array global para armazenar mixers
     mixers = [];
@@ -146,26 +146,25 @@ function addObjetcs() {
     // Adicionar modelos à cena com diferentes escalas
     addModel(scene, mixers, dragon.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'dragon');
 
-    addModel(scene, mixers, donut.href, { x: 300, y: 0, z: 220 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: 50, y: 0, z: 220 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: 150, y: 0, z: -50 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: 170, y: 0, z: 115 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: 300, y: 0, z: 100 }, { x: 3, y: 3, z: 3 }, 'collectible');
+    addModel(scene, mixers, sphere.href, { x: 300, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, sphere.href, { x: 50, y: 0, z: 220 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, sphere.href, { x: 150, y: 0, z: -50 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, sphere.href, { x: 170, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'collectible');
+    addModel(scene, mixers, sphere.href, { x: 300, y: 0, z: 100 }, { x: 10, y: 10, z: 10 }, 'collectible');
 
     addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 35 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 70, y: 0, z: 25 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 170, y: 0, z: 20 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 135, y: 0, z: 90 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 75, y: 0, z: 170 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 270, y: 0, z: 80 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 260, y: 0, z: 180 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 155, y: 0, z: 195 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, donut.href, { x: 170, y: 0, z: 20 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, donut.href, { x: 135, y: 0, z: 90 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, candy.href, { x: 75, y: 0, z: 170 }, { x: 0.1, y: 0.1, z: 0.1 }, 'oreo');
+    addModel(scene, mixers, candy.href, { x: 270, y: 0, z: 80 }, { x: 0.1, y: 0.1, z: 0.1 }, 'oreo');
+    addModel(scene, mixers, chocolate.href, { x: 260, y: 0, z: 180 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, chocolate.href, { x: 155, y: 0, z: 195 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 270, y: 0, z: 130 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 115, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'oreo');
 
     addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
 
-    addModel(scene, mixers, espeha.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'new');
 }
 
 // Função para suavizar a rotação do dragão
