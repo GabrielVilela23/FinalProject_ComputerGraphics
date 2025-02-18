@@ -263,19 +263,21 @@ function toggleDirectionalLight() {
 
 //Função para WinGame
 function winGame() {
-    let canvas = document.querySelector('canvas');
-    canvas.remove();
-    renderer.setAnimationLoop(null);
-    removeHud();
+    resetGame()
     finishScene();
     setTimeout(() => screen.showWinScreen(), 3000);
 }
 
 // Função para GameOver
 function gameOver() {
+    resetGame();
+    screen.showGameOverScreen();
+}
+
+function resetGame() {
     renderer.setAnimationLoop(null);
     let canvas = document.querySelector('canvas');
     canvas.remove();
     removeHud();
-    screen.showGameOverScreen();
+    targetRotation = 0;
 }
