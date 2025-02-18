@@ -31,9 +31,27 @@ export function sphereHud(player) {
     spheresCounter.appendChild(pElement);
 }
 
+export function controlsHud() {
+    const controlsElement = document.createElement('div');
+    controlsElement.innerHTML = `
+        <p>Frente - W</p>
+        <p>Trás - S</p>
+        <p>Esquerda - A</p>
+        <p>Direita - D</p>
+        <p>Camera - R</p>
+        <p>Luz 1 - 1</p>
+        <p>Luz 2 - 2</p>
+    `;
+
+    const controlsHud = document.getElementById('controls-hud');
+    controlsHud.innerHTML = '';
+    controlsHud.appendChild(controlsElement);
+}
+
 export function createHud(player) {
-   healthHud(player);
-   sphereHud(player);
+    healthHud(player);
+    sphereHud(player);
+    controlsHud();
 }
 
 export function removeHud() {
