@@ -39,7 +39,7 @@ body {
    right: 10px;
    bottom: 10px;
 
-   display: flex;
+   display: none;
    flex-direction: column;
    align-items: flex-end;
 
