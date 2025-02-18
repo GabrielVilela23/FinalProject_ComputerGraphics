@@ -129,18 +129,6 @@ document.addEventListener('keydown', function (event) {
     }
 
     // Movimentação e rotação
-    if (keysPressed['w'] || keysPressed['W']) {
-        // Movimento para frente
-        const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
-        dragon.position.add(direction.multiplyScalar(defaultVelocity));
-    }
-
-    if (keysPressed['s'] || keysPressed['S']) {
-        // Movimento para trás
-        const direction = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
-        dragon.position.add(direction.multiplyScalar(defaultVelocity));
-    }
-
     if (keysPressed['a'] || keysPressed['A']) {
         targetRotation += Math.PI / 18; // 10 graus em radianos
     }
@@ -228,6 +216,13 @@ function animate() {
         winGame();
     }
 
+    //Move o dragão para frente sempre
+    const dragon = scene.getObjectByName('dragon');
+    if (dragon) {
+        const direction = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), dragon.rotation.y);
+        dragon.position.add(direction.multiplyScalar(defaultVelocity));
+    }
+
     const delta = clock.getDelta();
 
     mixers.forEach((mixer) => mixer.update(delta));
@@ -237,7 +232,7 @@ function animate() {
     orbit.update();
 
     // Atualização: Posição da câmera
-    const dragon = scene.getObjectByName('dragon');
+    // const dragon = scene.getObjectByName('dragon');
     updateCameraPosition(scene, camera, cameraOption, dragon ? dragon.rotation.y : 0);
 
     // Atualização: Posição da caixa de colissão dos modelos
