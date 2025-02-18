@@ -39,8 +39,6 @@ export function sphereHud(player) {
 export function controlsHud() {
     const controlsElement = document.createElement('div');
     controlsElement.innerHTML = `
-        <p>Frente - W</p>
-        <p>Trás - S</p>
         <p>Esquerda - A</p>
         <p>Direita - D</p>
         <p>Camera - R</p>
