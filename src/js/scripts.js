@@ -42,7 +42,7 @@ function initGame() {
     window.player = new objPlayer();
     createHud(window.player);
 
-    const deafultVelocity = 0.5;
+    const deafultVelocity = 1;
     let key_lock = false;
 
     // Renderer
@@ -78,10 +78,10 @@ function initGame() {
             cameraOption = (cameraOption + 1) % 2;
         }
 
-        // Diminuir iluminação
-        if (event.key === 'r' || event.key === 'R') {
-            cameraOption = (cameraOption + 1) % 2;
-        }
+        // // Diminuir iluminação
+        // if (event.key === 'r' || event.key === 'R') {
+        //     cameraOption = (cameraOption + 1) % 2;
+        // }
 
         // Movimentação e rotação
         if (event.key === 'w' || event.key === 'W') {
@@ -145,17 +145,23 @@ function addObjetcs() {
 
     // Adicionar modelos à cena com diferentes escalas
     addModel(scene, mixers, dragon.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'dragon');
-    addModel(scene, mixers, donut.href, { x: -5, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: -10, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: -15, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: -20, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, 'collectible');
-    addModel(scene, mixers, donut.href, { x: -25, y: 0, z: 50 }, { x: 3, y: 3, z: 3 }, 'collectible');
 
-    addModel(scene, mixers, oreo.href, { x: 5, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 10, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 15, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
-    addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, donut.href, { x: 300, y: 0, z: 220 }, { x: 3, y: 3, z: 3 }, 'collectible');
+    addModel(scene, mixers, donut.href, { x: 50, y: 0, z: 220 }, { x: 3, y: 3, z: 3 }, 'collectible');
+    addModel(scene, mixers, donut.href, { x: 150, y: 0, z: -50 }, { x: 3, y: 3, z: 3 }, 'collectible');
+    addModel(scene, mixers, donut.href, { x: 170, y: 0, z: 115 }, { x: 3, y: 3, z: 3 }, 'collectible');
+    addModel(scene, mixers, donut.href, { x: 300, y: 0, z: 100 }, { x: 3, y: 3, z: 3 }, 'collectible');
+
+    addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 35 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 70, y: 0, z: 25 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 170, y: 0, z: 20 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 135, y: 0, z: 90 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 75, y: 0, z: 170 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 270, y: 0, z: 80 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 260, y: 0, z: 180 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 155, y: 0, z: 195 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 270, y: 0, z: 130 }, { x: 10, y: 10, z: 10 }, 'oreo');
+    addModel(scene, mixers, oreo.href, { x: 115, y: 0, z: 115 }, { x: 10, y: 10, z: 10 }, 'oreo');
 
     addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
 
