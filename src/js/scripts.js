@@ -271,6 +271,7 @@ function winGame() {
 // Função para GameOver
 function gameOver() {
     resetGame();
+    removeHud();
     screen.showGameOverScreen();
 }
 
@@ -278,6 +279,5 @@ function resetGame() {
     renderer.setAnimationLoop(null);
     let canvas = document.querySelector('canvas');
     canvas.remove();
-    removeHud();
     targetRotation = 0;
 }

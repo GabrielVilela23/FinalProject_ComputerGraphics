@@ -27,9 +27,8 @@ export function finishScene() {
 }
 
 function initFinishScene() {
-    window.prod = true;
+    window.prod = false;
     window.player = new objPlayer();
-    createHud(window.player);
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
