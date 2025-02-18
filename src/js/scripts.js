@@ -93,13 +93,13 @@ function initGame() {
 
         if ((event.key === 'a' || event.key === 'A') && !key_lock) {
             // Rotaciona 45 graus para a esquerda
-            targetRotation += Math.PI / 4; // 45 graus em radianos
+            targetRotation += Math.PI / 5; // 36 graus em radianos
             key_lock = true;
         }
 
         if ((event.key === 'd' || event.key === 'D') && !key_lock) {
             // Rotaciona 45 graus para a direita
-            targetRotation -= Math.PI / 4; // -45 graus em radianos
+            targetRotation -= Math.PI / 5; // -36 graus em radianos
             key_lock = true;
         }
     });
