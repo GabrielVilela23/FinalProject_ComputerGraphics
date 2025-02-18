@@ -6,9 +6,9 @@ export function checkCollisions(scene) {
     const models = scene.children.filter(
         (child) => child.isObject3D && child.userData.boundingBox && child.name !== 'dragon'
     );
-    const dragon = scene.children.filter((child) => child.name === 'dragon');
-    if(!dragon[0]) return;
-    const boxDragon = dragon[0].userData.boundingBox;
+    const dragon = scene.getObjectByName('dragon');
+    if(!dragon) return;
+    const boxDragon = dragon.userData.boundingBox;
     
     for (let i = 0; i < models.length; i++) {
         const box = models[i].userData.boundingBox;
