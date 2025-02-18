@@ -36,11 +36,12 @@ export class Camera {
 function topDownVision(scene, camera, dragonRotation) {
     const dragon = scene.getObjectByName('dragon');
     if (!dragon) return;
-
+    
     const cameraOffset = new THREE.Vector3(0, 40, 0);
     camera.three.position.copy(dragon.position).add(cameraOffset);
-
-    camera.three.lookAt(dragon.position);
+    
+    const lookAtOffset = new THREE.Vector3(0, 0, 20);
+    camera.three.lookAt(dragon.position.clone().add(lookAtOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), dragonRotation)));
     camera.three.rotation.z = dragonRotation + THREE.MathUtils.degToRad(180);
 }
 
