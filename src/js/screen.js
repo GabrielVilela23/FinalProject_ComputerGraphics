@@ -47,6 +47,10 @@ export class Screen {
     }
   
     onStart() {
+      let canvas = document.querySelector('canvas');
+      if (canvas) {
+          canvas.remove();
+      }
       console.log('Game started!');
       this.hideAllScreens();
       const startEvent = new CustomEvent('startGame');
