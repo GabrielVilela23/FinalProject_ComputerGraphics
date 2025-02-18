@@ -1,4 +1,6 @@
 import heartURL from '../img/heart.png';
+import lavaLampEmptyURL from '../img/lampada-de-lava-vazio.png'
+import lavaLampFullURL from '../img/lampada-de-lava-full.png'
 
 export function healthHud(player) {
     const healthBar = document.getElementById('health-hud');
@@ -17,8 +19,8 @@ export function removeHealthHud() {
     healthBar.innerHTML = '';
 }
 
-export function removeSphereHud() {
-    const spheresCounter = document.getElementById('spheres-hud');
+export function removeLavaLampsHud() {
+    const spheresCounter = document.getElementById('lava-lamp-hud');
     spheresCounter.innerHTML = '';
 }
 
@@ -27,13 +29,23 @@ export function removeControlsHud() {
     controls.style.display = 'none';
 }
 
-export function sphereHud(player) {
-    const pElement = document.createElement('p');
-    pElement.innerHTML = 'Esferas: ' + (player.spheres).toString().padStart(2, '0');
-    
-    const spheresCounter = document.getElementById('spheres-hud');
-    spheresCounter.innerHTML = '';
-    spheresCounter.appendChild(pElement);
+export function lavaLampsHud(player) {
+    const lavaLamp = document.getElementById('lava-lamp-hud');
+    lavaLamp.innerHTML = '';
+    let index;
+    for (index = 0; index < player.spheres; index++) {
+        let imgElement = document.createElement('img');
+        imgElement.src = lavaLampFullURL;
+
+        lavaLamp.appendChild(imgElement);
+    }
+
+    for(index; index < 5; index++) {
+        let imgElement = document.createElement('img');
+        imgElement.src = lavaLampEmptyURL;
+
+        lavaLamp.appendChild(imgElement);
+    }
 }
 
 export function controlsHud() {
@@ -54,12 +66,12 @@ export function controlsHud() {
 
 export function createHud(player) {
     healthHud(player);
-    sphereHud(player);
+    lavaLampsHud(player);
     controlsHud();
 }
 
 export function removeHud() {
     removeHealthHud();
-    removeSphereHud();
+    removeLavaLampsHud();
     removeControlsHud();
 }

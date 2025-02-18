@@ -17,22 +17,21 @@ body {
    object-fit: fill;
 }
 
-#spheres-hud{
+#lava-lamp-hud{
    position: fixed;
    right: 10px;
    top: 10px;
 
+   gap: 10px;
    display: flex;
    flex-direction: row;
 }
 
-#spheres-hud p{
-   font-family: 'Lexend', sans-serif;
-   font-size: 30px;
-   color: white;
-   margin: 0;
-   text-align: right;
+#lava-lamp-hud img{
+   width: 60px;
+   object-fit: fill;
 }
+
 
 #controls-hud {
    position: fixed;

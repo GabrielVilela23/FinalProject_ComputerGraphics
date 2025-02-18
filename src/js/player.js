@@ -1,4 +1,4 @@
-import { healthHud as updateHealthHud, sphereHud as updateSphereHud } from './hud.js';
+import { healthHud as updateHealthHud, lavaLampsHud as updateSphereHud } from './hud.js';
 
 export class objPlayer {
     constructor() {
