@@ -123,11 +123,13 @@ function initGame() {
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
+    //Adiciona objetos na cena
     addObjetcs();
 
     renderer.setAnimationLoop(animate);
 }
 
+//Função para adicionar objetos na tela
 function addObjetcs() {
     // Endereços dos modelos
     const dragon = new URL('../assets/eastern_dragon.glb', import.meta.url);
