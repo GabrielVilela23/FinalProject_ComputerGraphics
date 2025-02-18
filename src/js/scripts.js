@@ -6,6 +6,7 @@ import { addModel } from './modelLoader.js';
 import { objPlayer } from './player.js';
 import { createHud, removeHud } from './hud.js';
 import { Screen } from './screen.js';
+import { finishScene } from './final.js';
 import * as THREE from 'three';
 
 //Tela
@@ -32,8 +33,8 @@ const rotationSpeed = 0.1; // Velocidade da rotação suave
 //Variáveis de iluminação
 let isAmbientLightOn = true;
 let isDirectionalLightOn = true;
-let ambientLight
-let directionalLight
+let ambientLight;
+let directionalLight;
 
 //Velocidade
 const defaultVelocity = 2;
@@ -108,7 +109,6 @@ document.addEventListener('keyup', function (event) {
     if (event.key === 'l') {
         player.collectSpheres(5);
     }
-
 });
 
 document.addEventListener('keydown', function (event) {
@@ -220,20 +220,12 @@ clock = new THREE.Clock();
 function animate() {
     //Lógica de Game Over
     if (player.health <= 0) {
-        renderer.setAnimationLoop(null);
-        let canvas = document.querySelector('canvas');
-        canvas.remove();
-        removeHud();
-        screen.showGameOverScreen();
+        gameOver();
     }
 
     //Lógica de Win
     if (player.spheres >= 5) {
-        renderer.setAnimationLoop(null);
-        let canvas = document.querySelector('canvas');
-        canvas.remove();
-        removeHud();
-        screen.showWinScreen();
+        winGame();
     }
 
     const delta = clock.getDelta();
@@ -272,4 +264,23 @@ function toggleAmbientLight() {
 function toggleDirectionalLight() {
     isDirectionalLightOn = !isDirectionalLightOn;
     directionalLight.visible = isDirectionalLightOn;
+}
+
+//Função para WinGame
+function winGame() {
+    let canvas = document.querySelector('canvas');
+    canvas.remove();
+    renderer.setAnimationLoop(null);
+    removeHud();
+    finishScene();
+    setTimeout(() => screen.showWinScreen(), 3000);
+}
+
+// Função para GameOver
+function gameOver() {
+    renderer.setAnimationLoop(null);
+    let canvas = document.querySelector('canvas');
+    canvas.remove();
+    removeHud();
+    screen.showGameOverScreen();
 }

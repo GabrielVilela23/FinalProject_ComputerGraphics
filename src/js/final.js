@@ -5,15 +5,7 @@ import { checkCollisions } from './collision.js';
 import { addModel } from './modelLoader.js';
 import { objPlayer } from './player.js';
 import { createHud, removeHud } from './hud.js';
-import { Screen } from './screen.js';
 import * as THREE from 'three';
-
-// Tela
-const screen = new Screen();
-document.addEventListener('startGame', () => {
-    startGame();
-});
-screen.showMenu();
 
 // Variáveis globais
 let renderer;
@@ -29,12 +21,12 @@ let cameraOption = 0;
 let currentDragon = 'dragon';
 
 // Iniciar jogo
-function startGame() {
-    console.log('WebGL game started!');
-    initGame();
+export function finishScene() {
+    console.log('WebGL game finished!');
+    initFinishScene();
 }
 
-function initGame() {
+function initFinishScene() {
     window.prod = true;
     window.player = new objPlayer();
     createHud(window.player);
@@ -95,13 +87,6 @@ function addObjetcs() {
 // Loop de animação
 clock = new THREE.Clock();
 function animate() {
-    if (player.health <= 0) {
-        renderer.setAnimationLoop(null);
-        document.querySelector('canvas').remove();
-        removeHud();
-        screen.showGameOverScreen();
-    }
-
     const delta = clock.getDelta();
     mixers.forEach((mixer) => mixer.update(delta));
 
