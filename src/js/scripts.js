@@ -37,7 +37,7 @@ let ambientLight;
 let directionalLight;
 
 //Velocidade
-const defaultVelocity = 2;
+const defaultVelocity = 0.75;
 
 // Iniciar jogo
 function startGame() {
