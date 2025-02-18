@@ -50,6 +50,8 @@ O projeto também visa reforçar o entendimento sobre o pipeline gráfico do **W
 ## Mecânica
 - **W, A, S, D**: Movimentação
 - **R**: Alternar câmeras
+- **1**: Ligar/Desligar luz ambiente
+- **2**: Ligar/Desligar luz direcional
 
 ---
 
