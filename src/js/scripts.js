@@ -15,7 +15,7 @@ document.addEventListener('startGame', () => {
 });
 screen.showMenu();
 
-// variaveis globais (uteis pra recriar cena ok, confia)
+// Variáveis globais (uteis pra recriar cena ok, confia)
 let renderer;
 let clock;
 let mixers;
@@ -98,6 +98,13 @@ function initGame() {
         }
     });
 
+    // Redimensionar telas
+    window.addEventListener('resize', function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
     // Adicionar luzes à cena
     const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiente
     scene.add(ambientLight);
@@ -132,16 +139,9 @@ function initGame() {
     addModel(scene, mixers, oreo.href, { x: 20, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
     addModel(scene, mixers, oreo.href, { x: 25, y: 0, z: 50 }, { x: 10, y: 10, z: 10 }, 'oreo');
 
-    addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
+    // addModel(scene, mixers, scenario.href, { x: 185, y: 0, z: 120 }, { x: 100, y: 100, z: 100 }, 'scenario');
 
     addModel(scene, mixers, espeha.href, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }, 'new');
-
-    // Responsividade: Redimensionar tela
-    window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 
     renderer.setAnimationLoop(animate);
 }

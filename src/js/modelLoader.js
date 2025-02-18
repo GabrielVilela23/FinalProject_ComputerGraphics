@@ -52,30 +52,32 @@ export function addModel(scene, mixers, url, position, scale = { x: 1, y: 1, z: 
             loadedModel.name = name;
 
             if (name === 'dragon') {
-                const boundingBox = new THREE.Box3().setFromObject(loadedModel);
-                const headOffset = new THREE.Vector3(0, 1.5, 10);
-                const reductionZ = 31.0;
-                
-                boundingBox.min.z += reductionZ / 2;
-                boundingBox.max.z -= reductionZ / 2;
-                boundingBox.min.add(headOffset);
-                boundingBox.max.add(headOffset);
-                loadedModel.userData.boundingBox = boundingBox;
-                
-                const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
-                if (window.prod === true) scene.add(boxHelper);
-                
-                loadedModel.userData.updateBoundingBox = () => {
-                    boundingBox.setFromObject(loadedModel);
-                    boundingBox.min.z += reductionZ / 2;
-                    boundingBox.max.z -= reductionZ / 2;
-                    boundingBox.min.add(headOffset);
-                    boundingBox.max.add(headOffset);
+                const boundingBox = new THREE.Box3();
+                const boxSize = new THREE.Vector3(3, 3, 3);
+                const boxOffset = new THREE.Vector3(0, 1.5, 13);
 
-                    if (window.prod === true) boxHelper.box = boundingBox;
+                const boxHelper = new THREE.Box3Helper(boundingBox, 0xffff00);
+                const boxHelper2 = new THREE.BoxHelper(loadedModel, 0x00ff00);
+
+                if (window.prod === true) {
+                    scene.add(boxHelper);
+                    scene.add(boxHelper2);
                 }
-            }            
-            else {
+
+                loadedModel.userData.boundingBox = boundingBox;
+                loadedModel.userData.boxHelper = boxHelper;
+                loadedModel.userData.boxHelper2 = boxHelper2;
+
+                loadedModel.userData.updateBoundingBox = () => {
+                    const rotatedOffset = boxOffset.clone().applyQuaternion(loadedModel.quaternion);
+                    boundingBox.setFromCenterAndSize(loadedModel.position.clone().add(rotatedOffset), boxSize);
+
+                    if (window.prod === true) {
+                        boxHelper.box.copy(boundingBox);
+                        boxHelper2.update();
+                    }
+                };
+            } else {
                 loadedModel.userData.boundingBox = new THREE.Box3().setFromObject(loadedModel);
 
                 if (window.prod) {
