@@ -22,6 +22,11 @@ export function removeSphereHud() {
     spheresCounter.innerHTML = '';
 }
 
+export function removeControlsHud() {
+    const controls = document.getElementById('controls-hud');
+    controls.style.display = 'none';
+}
+
 export function sphereHud(player) {
     const pElement = document.createElement('p');
     pElement.innerHTML = 'Esferas: ' + (player.spheres).toString().padStart(2, '0');
@@ -44,6 +49,7 @@ export function controlsHud() {
     `;
 
     const controlsHud = document.getElementById('controls-hud');
+    controlsHud.style.display = 'flex';
     controlsHud.innerHTML = '';
     controlsHud.appendChild(controlsElement);
 }
@@ -57,4 +63,5 @@ export function createHud(player) {
 export function removeHud() {
     removeHealthHud();
     removeSphereHud();
+    removeControlsHud();
 }
