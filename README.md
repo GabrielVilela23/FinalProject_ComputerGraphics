@@ -5,6 +5,7 @@
 - **Brenda Uemura**
 - **Gabriel Santos de Sousa**
 - **Gabriel Vilela de Couto Rocha**
+- **Gustavo Henrique Nascimento de Chiato**
 - **Livia Beatriz Alves Canuto Ferreira de Paula**
 - **Murilo Gomes de Oliveira**
 
