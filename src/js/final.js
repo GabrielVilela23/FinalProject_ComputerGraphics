@@ -1,6 +1,6 @@
 // Imports
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { Camera, updateCameraPosition } from '../core/camera.js';
+import { Camera, updateCameraPosition } from './camera.js';
 import { checkCollisions } from './collision.js';
 import { addModel } from './modelLoader.js';
 import { objPlayer } from './player.js';
